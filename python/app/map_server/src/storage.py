@@ -163,7 +163,7 @@ class Frame:
             print(f"Failed to move frame {frame.name} to {new_frame_path}. Error: {e}")
             return None
         
-    def move_frame(self, new_parent_name: str):
+    def move(self, new_parent_name: str):
         """Move a frame to a new parent frame.
 
         Args:
@@ -194,7 +194,7 @@ class Frame:
             print(f"Failed to move frame {self.name} to {new_frame_path}. Error: {e}")
             return None
     
-    def add_frame(self, frame_name: str, parent_frame_name: str, pose: Pose = Pose(Position(), Orientation())):
+    def add_frame_to(self, frame_name: str, parent_frame_name: str, pose: Pose = Pose(Position(), Orientation())):
         """Create a new child frame and corresponding directory.
 
         Args:
@@ -271,7 +271,7 @@ class Frame:
             print(f"Failed to add child frame {frame_name} to {self.name}. Error: {e}")
             return None
         
-    def change_pose(self, frame_name: str, pose: Pose):
+    def change_pose_of(self, frame_name: str, pose: Pose):
         """Change the pose of a frame.
 
         Args:
@@ -406,29 +406,3 @@ def _load_frames(parent_frame: Frame, path: str):
             parent_frame.children.append(child_frame)
             _load_frames(child_frame, full_dir_path)
         break  # This is required to limit os.walk to one level deep.
-
-
-
-
-
-def main():
-    """Main function to load, print, and check the file system tree."""
-
-    path = '/home/iki/test'
-
-    map = load(path+'/map')
-
-    map.move_frame('test2', 'test')
-    map.move_frame('test', 'test3')
-    map.move_frame('test3', 'test3')
-    map.move_frame('test3', 'test2')
-
-    map.add_frame('test1', 'test2')
-
-    map.change_pose('test1', Pose(Position(1,2,3), Orientation(4,5,6)))
-    print(map)
-
-
-
-if __name__ == '__main__':
-    main()
