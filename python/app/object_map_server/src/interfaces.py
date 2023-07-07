@@ -520,8 +520,3 @@ def _load_frames_recursiv(parent_frame: Frame, path: str):
             parent_frame.children.append(child_frame)
             _load_frames_recursiv(child_frame, full_dir_path)
         break  # This is required to limit os.walk to one level deep.
-
-if __name__ == "__main__":
-    objects = load_objects('/home/iki/test/objects')
-    for object in objects:
-        print(object)
