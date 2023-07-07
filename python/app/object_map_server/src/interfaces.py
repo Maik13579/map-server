@@ -5,17 +5,24 @@ from typing import Optional, Set, Tuple
 
 POSE_FILE_NAME = 'pose.yaml'
 
-class Position:
-    """Class to represent a position in 3D space."""
+class Vector3:
+    """Class to represent a vector in 3D space."""
 
     def __init__(self, x=0.0, y=0.0, z=0.0):
-        """Initialize a Position instance.
+        """Initialize a vector instance.
         Args:
             x, y, z: Coordinate values.
         """
         self.x = x
         self.y = y
         self.z = z
+
+    def __str__(self):
+        '''
+        defines string conversion
+        '''
+        return "("+str(self.x)+", "+str(self.y)+", "+str(self.z)+")"
+
 
 class Orientation:
     """Class to represent an orientation in 3D space."""
@@ -29,12 +36,26 @@ class Orientation:
         self.pitch = pitch
         self.yaw = yaw
 
+    def __str__(self):
+        '''
+        defines string conversion
+        '''
+        return "("+str(self.roll)+", "+str(self.pitch)+", "+str(self.yaw)+")"
+
+
 class Pose:
     """Class to represent a pose in 3D space."""
 
-    def __init__(self, position: Position=None, orientation: Orientation=None):
-        self.position = position if position is not None else Position()
+    def __init__(self, position: Vector3=None, orientation: Orientation=None):
+        self.position = position if position is not None else Vector3()
         self.orientation = orientation if orientation is not None else Orientation()
+
+    def __str__(self):
+        '''
+        defines string conversion
+        '''
+        return "\n  position: "+str(self.position)+"\n  orientation: "+str(self.orientation)
+
 
     def get_dict(self):
         """Get a dictionary representation of this Pose.
@@ -55,6 +76,59 @@ class Pose:
             }
         }
     
+class Color:
+    '''
+    defines a RGB color
+    '''
+    def __init__(self):
+        self.r = 1.0
+        self.g = 1.0
+        self.b = 1.0
+
+    def set(self, r, g, b):
+        self.r = r
+        self.g = g
+        self.b = b
+
+    def __str__(self):
+        '''
+        defines string conversion
+        '''
+        return "("+str(self.r)+", "+str(self.g)+", "+str(self.b)+")"
+
+
+class Geometry:
+    '''
+    defines a geometry
+    different types:
+        CUBE: pose is the center
+        SPHERE: pose is the center
+            scale.x is diameter in x direction, scale.y in y direction, scale.z in z direction.
+            By setting these to different values you get an ellipsoid instead of a sphere. 
+        CYLINDER: pose is the center
+            scale.x is diameter in x direction, scale.y in y direction. 
+            By setting these to different values you get an ellipse instead of a circle.
+            Use scale.z to specify the height. 
+        MESH_RESOURCE: use mesh_resource as the path to the mesh file
+            Use scale to change the size of the mesh
+    '''
+    def __init__(self, id, type, mesh_resource="") -> None:
+        if type not in ["CUBE", "SPHERE", "CYLINDER", "MESH_RESOURCE"]:
+            raise Exception("type not known!")
+        self.id = id
+        self.pose = Pose()
+        self.scale = Vector3()
+        self.color = Color()
+        self.type = type
+        self.mesh_resource = mesh_resource
+
+    def __str__(self):
+        '''
+        defines string conversion
+        '''
+        return "id: "+str(self.id)+"\ntype: "+str(self.type)+"\npose: "+str(self.pose)+"\nscale: "+str(self.scale)+"\ncolor: "+str(self.color)
+
+
 
 class Frame:
     """Class to represent a directory in the file system tree."""
@@ -194,7 +268,7 @@ class Frame:
             print(f"Failed to move frame {self.name} to {new_frame_path}. Error: {e}")
             return None
     
-    def add_frame_to(self, frame_name: str, parent_frame_name: str, pose: Pose = Pose(Position(), Orientation())):
+    def add_frame_to(self, frame_name: str, parent_frame_name: str, pose: Pose = Pose(Vector3(), Orientation())):
         """Create a new child frame and corresponding directory.
 
         Args:
@@ -235,7 +309,7 @@ class Frame:
             print(f"Failed to add child frame {frame_name} to {parent_frame_name}. Error: {e}")
             return None
         
-    def add_frame(self, frame_name: str, pose: Pose = Pose(Position(), Orientation())):
+    def add_frame(self, frame_name: str, pose: Pose = Pose(Vector3(), Orientation())):
         """Create a new child frame and corresponding directory.
 
         Args:
@@ -384,7 +458,7 @@ def _load_frames(parent_frame: Frame, path: str):
                 data = yaml.safe_load(f)
                 position_data = data.get('position', {})
                 orientation_data = data.get('orientation', {})
-                position = Position(position_data.get('x', 0.0), 
+                position = Vector3(position_data.get('x', 0.0), 
                                     position_data.get('y', 0.0), 
                                     position_data.get('z', 0.0))
                 orientation = Orientation(orientation_data.get('roll', 0.0), 
@@ -393,7 +467,7 @@ def _load_frames(parent_frame: Frame, path: str):
                 parent_frame.pose = Pose(position, orientation)
         else:
             # If POSE_FILE_NAME is not found, use default pose.
-            default_pose = Pose(Position(), Orientation())
+            default_pose = Pose(Vector3(), Orientation())
             parent_frame.pose = default_pose
 
             # Create pose.yaml file in the new directory.
@@ -402,7 +476,7 @@ def _load_frames(parent_frame: Frame, path: str):
 
         for dirname in dirnames:
             full_dir_path = os.path.join(dirpath, dirname)
-            child_frame = Frame(dirname, parent_frame, Pose(Position(), Orientation()))
+            child_frame = Frame(dirname, parent_frame, Pose(Vector3(), Orientation()))
             parent_frame.children.append(child_frame)
             _load_frames(child_frame, full_dir_path)
         break  # This is required to limit os.walk to one level deep.
