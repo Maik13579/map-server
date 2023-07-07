@@ -1,14 +1,15 @@
 import os
 import yaml
 import shutil
-from typing import Optional, Set, Tuple
+from typing import Optional, Set, Tuple, List, Dict
 
 POSE_FILE_NAME = 'pose.yaml'
+GEOMETRY_FILE_NAME = 'geometry.yaml'
 
 class Vector3:
     """Class to represent a vector in 3D space."""
 
-    def __init__(self, x=0.0, y=0.0, z=0.0):
+    def __init__(self, x: float=0.0, y: float=0.0, z: float=0.0):
         """Initialize a vector instance.
         Args:
             x, y, z: Coordinate values.
@@ -27,7 +28,7 @@ class Vector3:
 class Orientation:
     """Class to represent an orientation in 3D space."""
 
-    def __init__(self, roll=0.0, pitch=0.0, yaw=0.0):
+    def __init__(self, roll: float=0.0, pitch: float=0.0, yaw: float=0.0):
         """Initialize an Orientation instance.
         Args:
             roll, pitch, yaw: Euler angles.
@@ -78,24 +79,19 @@ class Pose:
     
 class Color:
     '''
-    defines a RGB color
+    defines a RGBA color
     '''
-    def __init__(self):
+    def __init__(self, r: float=0.0, g: float=0.0, b: float=0.0, a: float=1.0) -> None:
         self.r = 1.0
         self.g = 1.0
         self.b = 1.0
-
-    def set(self, r, g, b):
-        self.r = r
-        self.g = g
-        self.b = b
+        self.a = 1.0
 
     def __str__(self):
         '''
         defines string conversion
         '''
-        return "("+str(self.r)+", "+str(self.g)+", "+str(self.b)+")"
-
+        return "("+str(self.r)+", "+str(self.g)+", "+str(self.b)+", "+str(self.a)+")"
 
 class Geometry:
     '''
@@ -112,7 +108,7 @@ class Geometry:
         MESH_RESOURCE: use mesh_resource as the path to the mesh file
             Use scale to change the size of the mesh
     '''
-    def __init__(self, id, type, mesh_resource="") -> None:
+    def __init__(self, id: str, type: str, mesh_resource: str="") -> None:
         if type not in ["CUBE", "SPHERE", "CYLINDER", "MESH_RESOURCE"]:
             raise Exception("type not known!")
         self.id = id
@@ -128,7 +124,23 @@ class Geometry:
         '''
         return "id: "+str(self.id)+"\ntype: "+str(self.type)+"\npose: "+str(self.pose)+"\nscale: "+str(self.scale)+"\ncolor: "+str(self.color)
 
+class Object:
+    '''
+    defines a object
+    geometries are the basic shapes the object consist off
+    id is a unique identifier
+    ns is the namespace
+    '''
+    def __init__(self, id: int, ns: str="", geometries: Dict[str, Geometry]=None) -> None:
+        self.id = id
+        self.ns = ns
+        self.geometries = geometries if geometries is not None else {}
 
+    def __str__(self):
+        '''
+        defines string conversion
+        '''
+        return os.path.join(self.ns, str(self.id))
 
 class Frame:
     """Class to represent a directory in the file system tree."""
@@ -416,8 +428,36 @@ class Frame:
         return _dfs(self, set())
 
 
+def load_objects(path: str) -> List[Object]:
+    """Load all objects in the given path.
+    
+     Args:
+        path: File system path to the objects.
 
-def load(path: str) -> Frame:
+    Returns:
+        List of Objects.
+    """
+    #check if path exists
+    if not os.path.exists(path):
+        raise ValueError("Path does not exist.")
+    
+    objects = []
+    for root, _, files in os.walk(path):
+        if GEOMETRY_FILE_NAME in files:
+            parent_dir = os.path.dirname(root)
+            object_ns = os.path.relpath(parent_dir, path) if parent_dir != path else ""
+            object_id = os.path.basename(root)
+            print(f"Loading object {os.path.join(object_ns, object_id)}")
+
+            with open(os.path.join(root, GEOMETRY_FILE_NAME), 'r') as f:
+                geometries = yaml.load(f, Loader=yaml.Loader)
+            
+            objects.append(Object(object_id, object_ns, geometries))
+    return objects
+
+
+
+def load_frames(path: str) -> Frame:
     """Load a file system tree from the given path.
 
     Args:
@@ -434,7 +474,7 @@ def load(path: str) -> Frame:
     root_frame = Frame(frame_name, parent_path)  # Initialize root Frame.
 
     print('Loading file system tree...')
-    _load_frames(root_frame, path)  # Load file system tree.
+    _load_frames_recursiv(root_frame, path)  # Load file system tree.
 
     # Check whether there are duplicate frame names.
     if root_frame.has_duplicate_names():
@@ -443,7 +483,7 @@ def load(path: str) -> Frame:
     print(root_frame)  # Print file system tree.
     return root_frame
 
-def _load_frames(parent_frame: Frame, path: str):
+def _load_frames_recursiv(parent_frame: Frame, path: str):
     """Recursively load directories from the file system into Frame objects.
 
     Args:
@@ -478,5 +518,10 @@ def _load_frames(parent_frame: Frame, path: str):
             full_dir_path = os.path.join(dirpath, dirname)
             child_frame = Frame(dirname, parent_frame, Pose(Vector3(), Orientation()))
             parent_frame.children.append(child_frame)
-            _load_frames(child_frame, full_dir_path)
+            _load_frames_recursiv(child_frame, full_dir_path)
         break  # This is required to limit os.walk to one level deep.
+
+if __name__ == "__main__":
+    objects = load_objects('/home/iki/test/objects')
+    for object in objects:
+        print(object)
