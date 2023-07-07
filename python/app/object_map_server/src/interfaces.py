@@ -108,10 +108,10 @@ class Geometry:
         MESH_RESOURCE: use mesh_resource as the path to the mesh file
             Use scale to change the size of the mesh
     '''
-    def __init__(self, id: str, type: str, mesh_resource: str="") -> None:
+    def __init__(self, name: str, type: str, mesh_resource: str="") -> None:
         if type not in ["CUBE", "SPHERE", "CYLINDER", "MESH_RESOURCE"]:
             raise Exception("type not known!")
-        self.id = id
+        self.name = name
         self.pose = Pose()
         self.scale = Vector3()
         self.color = Color()
@@ -122,17 +122,17 @@ class Geometry:
         '''
         defines string conversion
         '''
-        return "id: "+str(self.id)+"\ntype: "+str(self.type)+"\npose: "+str(self.pose)+"\nscale: "+str(self.scale)+"\ncolor: "+str(self.color)
+        return "Name: "+str(self.name)+"\ntype: "+str(self.type)+"\npose: "+str(self.pose)+"\nscale: "+str(self.scale)+"\ncolor: "+str(self.color)
 
 class Object:
     '''
     defines a object
     geometries are the basic shapes the object consist off
-    id is a unique identifier
+    name is a unique identifier
     ns is the namespace
     '''
-    def __init__(self, id: int, ns: str="", geometries: Dict[str, Geometry]=None) -> None:
-        self.id = id
+    def __init__(self, name: str, ns: str="", geometries: Dict[str, Geometry]=None) -> None:
+        self.name = name
         self.ns = ns
         self.geometries = geometries if geometries is not None else {}
 
@@ -446,13 +446,13 @@ def load_objects(path: str) -> List[Object]:
         if GEOMETRY_FILE_NAME in files:
             parent_dir = os.path.dirname(root)
             object_ns = os.path.relpath(parent_dir, path) if parent_dir != path else ""
-            object_id = os.path.basename(root)
-            print(f"Loading object {os.path.join(object_ns, object_id)}")
+            object_name = os.path.basename(root)
+            print(f"Loading object {os.path.join(object_ns, object_name)}")
 
             with open(os.path.join(root, GEOMETRY_FILE_NAME), 'r') as f:
                 geometries = yaml.load(f, Loader=yaml.Loader)
             
-            objects.append(Object(object_id, object_ns, geometries))
+            objects.append(Object(object_name, object_ns, geometries))
     return objects
 
 
