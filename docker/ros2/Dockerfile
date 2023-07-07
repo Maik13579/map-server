@@ -19,3 +19,5 @@ RUN cd /root/python && python3 setup.py bdist_wheel sdist && pip3 install -e .
 
 # Build ros package
 RUN source /opt/ros/$ROS_DISTRO/setup.bash && colcon build --symlink-install
+
+COPY example /example
