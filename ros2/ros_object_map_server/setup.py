@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'ros_map_server'
+package_name = 'ros_object_map_server'
 
 data_files=[
         ('share/ament_index/resource_index/packages',
@@ -22,7 +22,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-                'ros_map_server_node = ros_map_server.ros_map_server_node:main',
+                'ros_object_map_server_node = ros_object_map_server.ros_object_map_server_node:main',
         ],
     },
 )

@@ -1,8 +1,8 @@
 version: '2.4'
 services:
-  map-server:
-    container_name: ros2-map-server
-    image: map-server:humble
+  object-map-server:
+    container_name: ros2-object-map-server
+    image: object-map-server:humble
     runtime: nvidia
     environment:
       DISPLAY: $DISPLAY

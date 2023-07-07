@@ -1,8 +1,8 @@
 version: '2.4'
 services:
-  map-server:
-    container_name: ros-map-server
-    image: map-server:noetic
+  object-map-server:
+    container_name: ros-object-map-server
+    image: object-map-server:noetic
     runtime: nvidia
     environment:
       DISPLAY: $DISPLAY

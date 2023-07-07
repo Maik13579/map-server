@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>ros_map_server</name>
+  <name>ros_object_map_server</name>
   <version>0.0.0</version>
   <description>.</description>
   <maintainer email="maik.knof@gmx.de">Maik Knof</maintainer>

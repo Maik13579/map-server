@@ -1,8 +1,8 @@
 version: '2.4'
 services:
-  map-server:
-    container_name: ros2-map-server
-    image: map-server:humble
+  object-map-server:
+    container_name: ros2-object-map-server
+    image: object-map-server:humble
     runtime: nvidia
     environment:
       DISPLAY: $DISPLAY
@@ -17,4 +17,4 @@ services:
       - /dev/shm:/dev/shm
       - /tmp/.X11-unix:/tmp/.X11-unix
       - $HOME/.Xauthority:/root/.Xauthority
-    command: ros2 run ros_map_server ros_map_server_node
+    command: ros2 run object_ros_map_server object_ros_map_server_node

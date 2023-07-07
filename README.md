@@ -1,4 +1,4 @@
-# map-server
+# object-map-server
 
 ## Dependencies
  - [Docker](https://www.docker.com/)

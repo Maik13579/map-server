@@ -1,14 +1,14 @@
 version: '2.4'
 services:
   ros:
-    container_name: map-server_ros_build
-    image: map-server:noetic
+    container_name: object-map-server_ros_build
+    image: object-map-server:noetic
     build:
       context: ..
       dockerfile: docker/ros/Dockerfile
   ros2:
-    container_name: map-server_ros2_build
-    image: map-server:humble
+    container_name: object-map-server_ros2_build
+    image: object-map-server:humble
     build:
       context: ..
       dockerfile: docker/ros2/Dockerfile

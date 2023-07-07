@@ -4,7 +4,7 @@ with open("app/README.md", "r") as f:
     long_description = f.read()
 
 setup(
-    name="map_server",
+    name="object_map_server",
     version="0.0.0",
     description="",
     package_dir={"": "app"},
