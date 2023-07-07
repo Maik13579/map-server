@@ -1,3 +1,1 @@
-from .src import (
-    interfaces,
-)
+from .src.interfaces import *

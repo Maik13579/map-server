@@ -5,8 +5,8 @@ import tf2_ros
 from geometry_msgs.msg import TransformStamped
 from visualization_msgs.msg import MarkerArray
 
-from object_map_server.interfaces import load_objects, load_frames, Frame
-from ros_object_map_server.conversion import objects2markerarray, pose2rospose
+from object_map_server import load_objects, load_frames, Frame
+from conversion import objects2markerarray, pose2rospose
 
 OBJECT_TOPIC = "/object_map_server/objects"
 RATE = 1.0

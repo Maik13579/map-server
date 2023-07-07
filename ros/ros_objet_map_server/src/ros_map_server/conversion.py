@@ -3,7 +3,7 @@
 import tf.transformations as tft
 from visualization_msgs.msg import Marker, MarkerArray
 from geometry_msgs.msg import Pose as RosPose
-from object_map_server.interfaces import Pose, Geometry
+from object_map_server import Pose, Geometry
 
 
 #values from http://docs.ros.org/en/noetic/api/visualization_msgs/html/msg/Marker.html
