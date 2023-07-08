@@ -140,7 +140,7 @@ class Object:
         '''
         defines string conversion
         '''
-        return os.path.join(self.ns, str(self.id))
+        return os.path.join(self.ns, str(self.name))
 
 class Frame:
     """Class to represent a directory in the file system tree."""

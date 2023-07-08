@@ -7,6 +7,8 @@ from visualization_msgs.msg import MarkerArray
 
 from object_map_server import load_objects, load_frames, Frame
 from conversion import objects2markerarray, pose2rospose
+from interactive_object_server import InteractiveObjectServer
+
 
 OBJECT_TOPIC = "/object_map_server/objects"
 RATE = 1.0
@@ -20,6 +22,9 @@ class ObjectMapServer():
         
         rospy.loginfo("Loading frames")
         self.root_frame = load_frames(frame_path)
+
+        #create interactive marker server
+        self.server = InteractiveObjectServer("interactive_object_map_server", self.objects)
         
         # Publisher
         self.pub = rospy.Publisher(OBJECT_TOPIC, MarkerArray, queue_size=10)
