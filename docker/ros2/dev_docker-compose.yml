@@ -19,4 +19,5 @@ services:
       - $HOME/.Xauthority:/root/.Xauthority
       - ../../python:/root/python
       - ../../ros2:/root/ros2_ws/src/ros2
+      - ../../example:/example
     command: tail -f /dev/null

@@ -1,46 +1,90 @@
+
+#!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
+from rclpy.qos import QoSProfile
 
-from ros_map_server_interfaces.msg import Example
-from map_server import example_function
+from tf2_ros import TransformBroadcaster, StaticTransformBroadcaster
+from geometry_msgs.msg import TransformStamped
+from visualization_msgs.msg import MarkerArray
 
-class MapServer(Node):
-    def __init__(self):
-        super().__init__("ros_map_server")
-        self.get_logger().info('Starting')
+from object_map_server import load_objects, load_frames, Frame
+from ros_object_map_server.conversion import objects2markerarray, pose2rospose
+
+OBJECT_TOPIC = "/object_map_server/objects"
+RATE = 1.0
+
+class ObjectMapServer(Node):
+    def __init__(self, object_path: str, frame_path: str):
+        super().__init__('object_map_server')
         
-        #Params
-        self.declare_parameter('rate', 1)
-        rate = self.get_parameter('rate').get_parameter_value().integer_value
+        self.get_logger().info('Loading objects')
+        self.objects = load_objects(object_path)
+        
+        self.get_logger().info('Loading frames')
+        self.root_frame = load_frames(frame_path)
+        
+        # Publisher
+        qos_profile = QoSProfile(depth=10)
+        self.pub = self.create_publisher(MarkerArray, OBJECT_TOPIC, qos_profile)
 
-        #Publisher
-        #self.pub = self.create_publisher(MSG, TOPIC, QUEUE_SIZE)
+        # Tf broadcaster
+        self.br = TransformBroadcaster(self)
 
-        #Subscriber
-        #self.subscription = self.create_subscription(
-        #    MSG,
-        #    TOPIC,
-        #    CALLBACK,
-        #    QUEUE_SIZE)
-        #self.subscription  # prevent unused variable warning
+        timer_period = 1.0 / RATE  # seconds
+        self.timer = self.create_timer(timer_period, self.timer_callback)
 
+    def timer_callback(self):
+        self.publish_objects()
+        self.publish_tf_recursiv(self.root_frame)
 
-        #Timer
-        self.timer = self.create_timer(1/rate, self.loop)
+    def publish_objects(self):
+        markers = objects2markerarray(self.objects)
+        self.pub.publish(markers)
 
-    def loop(self):
+    def publish_tf(self, frame_id, child_frame_id, pose):
         '''
-        main loop
+        publish tf
         '''
-        self.get_logger().info(str(Example()))
-        example_function()
+        t = TransformStamped()
+        t.header.stamp = self.get_clock().now().to_msg()
+        t.header.frame_id = frame_id
+        t.child_frame_id = child_frame_id
+        t.transform.translation.x = pose.position.x
+        t.transform.translation.y = pose.position.y
+        t.transform.translation.z = pose.position.z
+        t.transform.rotation.x = pose.orientation.x
+        t.transform.rotation.y = pose.orientation.y
+        t.transform.rotation.z = pose.orientation.z
+        t.transform.rotation.w = pose.orientation.w
+        self.br.sendTransform(t)
+
+    def publish_tf_recursiv(self, frame):
+        '''
+        publish tf recursivly
+        '''
+        #if frame has parent, publish tf
+        if isinstance(frame.parent, Frame):
+            self.publish_tf(frame.parent.name, frame.name, pose2rospose(frame.pose))
+
+        #recursivly call this function for all children
+        for child in frame.children:
+            self.publish_tf_recursiv(child)
 
 
 def main(args=None):
+    import sys
+    if len(sys.argv) > 2:
+        object_path = sys.argv[2]
+        frame_path = sys.argv[1]
+    else:
+        print("Usage: ros2 run ros_object_map_server main.py <frame_path> <object_path>")
+        exit()
+
     rclpy.init(args=args)
     try:
-        node = MapServer()
+        node = ObjectMapServer(object_path, frame_path)
         executor = MultiThreadedExecutor()
         executor.add_node(node)
         try:
