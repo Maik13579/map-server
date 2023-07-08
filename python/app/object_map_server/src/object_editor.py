@@ -69,7 +69,7 @@ class EditObject(ttk.Frame):
         self.object_ns_label2 = ttk.Label(self, text=self.obj.ns)
         self.object_ns_label2.grid(column=1, row=1)
 
-        # Create a Listbox and populate it with object names
+        # Create a Listbox and populate it with geometry names
         self.listbox = tk.Listbox(self)
         self.listbox.grid(column=0, row=2, rowspan=len(self.obj.geometries))
         for name in self.obj.geometries.keys():
@@ -115,7 +115,7 @@ class EditGeometry(ttk.Frame):
 
         self.type_label = ttk.Label(self, text="Type:")
         self.type_label.grid(column=0, row=1)
-        self.type_entry = ttk.Combobox(self, values=["CUBE", "SPHERE", "CYLINDER", "MESH_RESOURCE"])
+        self.type_entry = ttk.Combobox(self, values=["CUBE", "SPHERE", "CYLINDER", "MESH_RESOURCE"], state='readonly')
         self.type_entry.grid(column=1, row=1)
         self.type_entry.set(self.geometry.type)
 
