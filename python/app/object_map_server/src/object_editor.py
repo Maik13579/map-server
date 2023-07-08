@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
 from .interfaces import Object, Geometry
 
@@ -147,17 +147,24 @@ class EditGeometry(ttk.Frame):
         self.update_button.grid(column=1, row=6)
 
     def update_geometry(self):
-        self.geometry.type = self.type_entry.get()
+        try:
+            self.geometry.type = self.type_entry.get()
 
-        r, g, b, a = map(float, self.color_entry.get().split(', '))
-        self.geometry.color.r, self.geometry.color.g, self.geometry.color.b, self.geometry.color.a = r, g, b, a
+            r, g, b, a = map(float, self.color_entry.get().split(', '))
+            self.geometry.color.r, self.geometry.color.g, self.geometry.color.b, self.geometry.color.a = r, g, b, a
 
-        x, y, z = map(float, self.pose_entry.get().split(', '))
-        self.geometry.pose.position.x, self.geometry.pose.position.y, self.geometry.pose.position.z = x, y, z
+            x, y, z = map(float, self.pose_entry.get().split(', '))
+            self.geometry.pose.position.x, self.geometry.pose.position.y, self.geometry.pose.position.z = x, y, z
 
-        x, y, z = map(float, self.scale_entry.get().split(', '))
-        self.geometry.scale.x, self.geometry.scale.y, self.geometry.scale.z = x, y, z
+            x, y, z = map(float, self.scale_entry.get().split(', '))
+            self.geometry.scale.x, self.geometry.scale.y, self.geometry.scale.z = x, y, z
 
-        self.geometry.mesh_resource = self.mesh_entry.get()
+            self.geometry.mesh_resource = self.mesh_entry.get()
+        except Exception as e:
+            self.show_error("Update Failed", str(e))
+            return
 
+    @staticmethod
+    def show_error(title, message):
+        messagebox.showerror(title, message)
 
