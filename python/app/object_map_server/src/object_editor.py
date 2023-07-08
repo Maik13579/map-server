@@ -4,11 +4,12 @@ from tkinter import ttk
 from .interfaces import Object, Geometry
 
 class ObjectEditor(ttk.Frame):
-    def __init__(self, master=None, objects=None):
+    def __init__(self, master=None, objects=None, highlight=lambda selected: print(selected)):
         master.title("Object Editor")
         super().__init__(master)
         self.master = master
         self.objects = objects
+        self.highlight = highlight
         self.grid()
         self.create_widgets()
 
@@ -18,10 +19,20 @@ class ObjectEditor(ttk.Frame):
         self.listbox.grid(column=0, row=0, rowspan=len(self.objects))
         for obj in self.objects:
             self.listbox.insert(tk.END, obj.name)
+
+        # Bind the <<ListboxSelect>> event to the highlight_selection method
+        self.listbox.bind('<<ListboxSelect>>', self.highlight_selection)
         
         # Create a Button that calls the handle_selection method when clicked
         self.button = ttk.Button(self, text="Select", command=self.handle_selection)
         self.button.grid(column=1, row=0)
+
+    def highlight_selection(self, event):
+        # Check if an item is selected
+        selection = self.listbox.curselection()
+        if selection:
+            selected_object = self.listbox.get(selection[0])
+            self.highlight("object:"+selected_object)
 
     def handle_selection(self):
         # Get the selected object name
@@ -32,14 +43,15 @@ class ObjectEditor(ttk.Frame):
             if obj.name == selected_object:
                 new_window = tk.Toplevel(self.master)
                 new_window.grab_set()
-                AddObject(new_window, obj)
+                EditObject(new_window, obj, self.highlight)
 
 
-class AddObject(ttk.Frame):
-    def __init__(self, master=None, obj: Object=None):
-        master.title("Add Object")
+class EditObject(ttk.Frame):
+    def __init__(self, master=None, obj: Object=None, highlight=lambda selected: print(selected)):
+        master.title("Edit Object")
         super().__init__(master)
         self.master = master
+        self.highlight = highlight
         self.obj = obj
         self.grid()
         self.create_widgets()
@@ -62,11 +74,20 @@ class AddObject(ttk.Frame):
         self.listbox.grid(column=0, row=2, rowspan=len(self.obj.geometries))
         for name in self.obj.geometries.keys():
             self.listbox.insert(tk.END, name)
+
+        # Bind the <<ListboxSelect>> event to the highlight_selection method
+        self.listbox.bind('<<ListboxSelect>>', self.highlight_selection)
         
         # Create a Button that calls the handle_selection method when clicked
         self.button = ttk.Button(self, text="Select", command=self.handle_selection)
         self.button.grid(column=1, row=2)
 
+    def highlight_selection(self, event):
+        # Check if an item is selected
+        selection = self.listbox.curselection()
+        if selection:
+            selected_object = self.listbox.get(selection[0])
+            self.highlight("geometry:"+selected_object)
 
     def handle_selection(self):
         # Get the selected object name
@@ -74,12 +95,12 @@ class AddObject(ttk.Frame):
 
         new_window = tk.Toplevel(self.master)
         new_window.grab_set()
-        AddGeometry(new_window, self.obj.geometries[selected_geometry])
+        EditGeometry(new_window, self.obj.geometries[selected_geometry])
 
 
-class AddGeometry(ttk.Frame):
-    def __init__(self, master=None, geometry: Geometry=None):
-        master.title("Add Geometry")
+class EditGeometry(ttk.Frame):
+    def __init__(self, master=None, geometry=None):
+        master.title("Edit Geometry")
         super().__init__(master)
         self.master = master
         self.geometry = geometry
@@ -89,16 +110,54 @@ class AddGeometry(ttk.Frame):
     def create_widgets(self):
         self.geometry_label = ttk.Label(self, text="Geometry Name:")
         self.geometry_label.grid(column=0, row=0)
-        
-        self.geometry_entry = ttk.Entry(self)
+        self.geometry_entry = ttk.Label(self, text=self.geometry.name)
         self.geometry_entry.grid(column=1, row=0)
-        self.geometry_entry.insert(0, self.geometry.name)
-        
+
         self.type_label = ttk.Label(self, text="Type:")
         self.type_label.grid(column=0, row=1)
-        
-        self.type_entry = ttk.Combobox(self, values=["CUBE", "SPHERE", "CYLINDER"])
+        self.type_entry = ttk.Combobox(self, values=["CUBE", "SPHERE", "CYLINDER", "MESH_RESOURCE"])
         self.type_entry.grid(column=1, row=1)
         self.type_entry.set(self.geometry.type)
+
+        self.color_label = ttk.Label(self, text="Color (r, g, b, a):")
+        self.color_label.grid(column=0, row=2)
+        self.color_entry = ttk.Entry(self)
+        self.color_entry.grid(column=1, row=2)
+        self.color_entry.insert(0, f"{self.geometry.color.r}, {self.geometry.color.g}, {self.geometry.color.b}, {self.geometry.color.a}")
+
+        self.pose_label = ttk.Label(self, text="Pose (x, y, z):")
+        self.pose_label.grid(column=0, row=3)
+        self.pose_entry = ttk.Entry(self)
+        self.pose_entry.grid(column=1, row=3)
+        self.pose_entry.insert(0, f"{self.geometry.pose.position.x}, {self.geometry.pose.position.y}, {self.geometry.pose.position.z}")
+
+        self.scale_label = ttk.Label(self, text="Scale (x, y, z):")
+        self.scale_label.grid(column=0, row=4)
+        self.scale_entry = ttk.Entry(self)
+        self.scale_entry.grid(column=1, row=4)
+        self.scale_entry.insert(0, f"{self.geometry.scale.x}, {self.geometry.scale.y}, {self.geometry.scale.z}")
+
+        self.mesh_label = ttk.Label(self, text="Mesh Resource:")
+        self.mesh_label.grid(column=0, row=5)
+        self.mesh_entry = ttk.Entry(self)
+        self.mesh_entry.grid(column=1, row=5)
+        self.mesh_entry.insert(0, self.geometry.mesh_resource)
+
+        self.update_button = ttk.Button(self, text="Update", command=self.update_geometry)
+        self.update_button.grid(column=1, row=6)
+
+    def update_geometry(self):
+        self.geometry.type = self.type_entry.get()
+
+        r, g, b, a = map(float, self.color_entry.get().split(', '))
+        self.geometry.color.r, self.geometry.color.g, self.geometry.color.b, self.geometry.color.a = r, g, b, a
+
+        x, y, z = map(float, self.pose_entry.get().split(', '))
+        self.geometry.pose.position.x, self.geometry.pose.position.y, self.geometry.pose.position.z = x, y, z
+
+        x, y, z = map(float, self.scale_entry.get().split(', '))
+        self.geometry.scale.x, self.geometry.scale.y, self.geometry.scale.z = x, y, z
+
+        self.geometry.mesh_resource = self.mesh_entry.get()
 
 
