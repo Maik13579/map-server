@@ -1,4 +1,9 @@
 # object-map-server
+A object based, geometry world representation system.
+
+## Examples
+### Robocup2023 OPL Arena
+![](imgs/robocup2023_opl_arena.png)
 
 ## Dependencies
  - [Docker](https://www.docker.com/)
