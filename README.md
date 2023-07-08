@@ -1,5 +1,5 @@
 # object-map-server
-A object based, geometry world representation system.
+A object based, geometric world representation system based on [visualization markers](http://docs.ros.org/en/noetic/api/visualization_msgs/html/msg/Marker.html) and [tf](http://wiki.ros.org/tf).
 
 ## Examples
 ### Robocup2023 OPL Arena
