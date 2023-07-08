@@ -4,7 +4,7 @@ base: !!python/object:object_map_server.Geometry
     g: 0.2
     r: 0.2
     a: 1.0
-  id: base
+  name: base
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -26,7 +26,7 @@ pole: !!python/object:object_map_server.Geometry
     g: 0.2
     r: 0.2
     a: 1.0
-  id: pole
+  name: pole
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation

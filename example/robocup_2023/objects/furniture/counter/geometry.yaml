@@ -4,7 +4,7 @@ bb: !!python/object:object_map_server.Geometry
     b: 0
     g: 0
     r: 0
-  id: bb
+  name: bb
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -26,7 +26,7 @@ body: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: body
+  name: body
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation

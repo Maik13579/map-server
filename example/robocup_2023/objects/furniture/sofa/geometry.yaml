@@ -4,7 +4,7 @@ back: !!python/object:object_map_server.Geometry
     g: 0.2
     r: 0.2
     a: 1.0
-  id: back
+  name: back
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -26,7 +26,7 @@ left_arm: !!python/object:object_map_server.Geometry
     g: 0.2
     r: 0.2
     a: 1.0
-  id: left_arm
+  name: left_arm
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -48,7 +48,7 @@ leg_1: !!python/object:object_map_server.Geometry
     g: 0.0
     r: 0.0
     a: 1.0
-  id: leg_1
+  name: leg_1
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -70,7 +70,7 @@ leg_2: !!python/object:object_map_server.Geometry
     g: 0.0
     r: 0.0
     a: 1.0
-  id: leg_2
+  name: leg_2
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -92,7 +92,7 @@ leg_3: !!python/object:object_map_server.Geometry
     g: 0.0
     r: 0.0
     a: 1.0
-  id: leg_3
+  name: leg_3
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -114,7 +114,7 @@ leg_4: !!python/object:object_map_server.Geometry
     g: 0.0
     r: 0.0
     a: 1.0
-  id: leg_4
+  name: leg_4
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -136,7 +136,7 @@ right_arm: !!python/object:object_map_server.Geometry
     g: 0.2
     r: 0.2
     a: 1.0
-  id: right_arm
+  name: right_arm
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -158,7 +158,7 @@ seat: !!python/object:object_map_server.Geometry
     g: 0.2
     r: 0.2
     a: 1.0
-  id: seat
+  name: seat
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation

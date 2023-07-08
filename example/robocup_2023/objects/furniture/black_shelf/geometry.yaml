@@ -4,7 +4,7 @@ leg_1: !!python/object:object_map_server.Geometry
     g: 0.0
     r: 0.0
     a: 1.0
-  id: leg_1
+  name: leg_1
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -26,7 +26,7 @@ leg_2: !!python/object:object_map_server.Geometry
     g: 0.0
     r: 0.0
     a: 1.0
-  id: leg_2
+  name: leg_2
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -48,7 +48,7 @@ leg_3: !!python/object:object_map_server.Geometry
     g: 0.0
     r: 0.0
     a: 1.0
-  id: leg_3
+  name: leg_3
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -70,7 +70,7 @@ leg_4: !!python/object:object_map_server.Geometry
     g: 0.0
     r: 0.0
     a: 1.0
-  id: leg_4
+  name: leg_4
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -92,7 +92,7 @@ shelf_1: !!python/object:object_map_server.Geometry
     g: 0.0
     r: 0.0
     a: 1.0
-  id: shelf_1
+  name: shelf_1
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -114,7 +114,7 @@ shelf_2: !!python/object:object_map_server.Geometry
     g: 0.0
     r: 0.0
     a: 1.0
-  id: shelf_2
+  name: shelf_2
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -136,7 +136,7 @@ shelf_3: !!python/object:object_map_server.Geometry
     g: 0.0
     r: 0.0
     a: 1.0
-  id: shelf_3
+  name: shelf_3
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -158,7 +158,7 @@ shelf_4: !!python/object:object_map_server.Geometry
     g: 0.0
     r: 0.0
     a: 1.0
-  id: shelf_4
+  name: shelf_4
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation

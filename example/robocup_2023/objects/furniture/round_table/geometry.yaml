@@ -4,7 +4,7 @@ base: !!python/object:object_map_server.Geometry
     g: 0.0
     r: 0.0
     a: 1.0
-  id: base
+  name: base
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -26,7 +26,7 @@ bb: !!python/object:object_map_server.Geometry
     b: 0
     g: 0
     r: 0
-  id: bb
+  name: bb
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -48,7 +48,7 @@ leg: !!python/object:object_map_server.Geometry
     g: 0.0
     r: 0.0
     a: 1.0
-  id: leg
+  name: leg
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -70,7 +70,7 @@ plate: !!python/object:object_map_server.Geometry
     g: 0.27058823529411763
     r: 0.5450980392156862
     a: 1.0
-  id: plate
+  name: plate
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation

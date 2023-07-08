@@ -4,7 +4,7 @@ back: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: back
+  name: back
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -26,7 +26,7 @@ bottom: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: bottom
+  name: bottom
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -48,7 +48,7 @@ door: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: door
+  name: door
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -70,7 +70,7 @@ left: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: left
+  name: left
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -92,7 +92,7 @@ right: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: right
+  name: right
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -114,7 +114,7 @@ shelf_1: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: shelf_1
+  name: shelf_1
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -136,7 +136,7 @@ shelf_2: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: shelf_2
+  name: shelf_2
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -158,7 +158,7 @@ shelf_3: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: shelf_3
+  name: shelf_3
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -180,7 +180,7 @@ shelf_4: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: shelf_4
+  name: shelf_4
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -202,7 +202,7 @@ shelf_5: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: shelf_5
+  name: shelf_5
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -224,7 +224,7 @@ top: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: top
+  name: top
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation

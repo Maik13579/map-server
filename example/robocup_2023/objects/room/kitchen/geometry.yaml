@@ -4,7 +4,7 @@ east_wall_1: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: east_wall_1
+  name: east_wall_1
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -26,7 +26,7 @@ east_wall_2: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: east_wall_2
+  name: east_wall_2
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -48,7 +48,7 @@ north_wall: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: north_wall
+  name: north_wall
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -70,7 +70,7 @@ south_wall_1: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: south_wall_1
+  name: south_wall_1
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -92,7 +92,7 @@ south_wall_2: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: south_wall_2
+  name: south_wall_2
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
@@ -114,7 +114,7 @@ west_wall: !!python/object:object_map_server.Geometry
     g: 1.0
     r: 1.0
     a: 1.0
-  id: west_wall
+  name: west_wall
   mesh_resource: ''
   pose: !!python/object:object_map_server.Pose
     orientation: !!python/object:object_map_server.Orientation
