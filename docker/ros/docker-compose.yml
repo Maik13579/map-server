@@ -19,4 +19,4 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - $HOME/.Xauthority:/root/.Xauthority
-    command: rosrun ros_object_map_server main.py --frame_path /example/maps/opl_arena_robocup2023 --object_path /example/objects
+    command: rosrun ros_object_map_server main.py --frame_path /example/robocup_2023/map --object_path /example/robocup_2023/objects
