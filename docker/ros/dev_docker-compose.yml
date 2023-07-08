@@ -21,4 +21,5 @@ services:
       - $HOME/.Xauthority:/root/.Xauthority
       - ../../python:/root/python
       - ../../ros:/root/catkin_ws/src/ros
+      - ../../example:/example
     command: tail -f /dev/null
