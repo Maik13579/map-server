@@ -4,12 +4,14 @@ from tkinter import ttk, messagebox
 from .interfaces import Object, Geometry
 
 class ObjectEditor(ttk.Frame):
-    def __init__(self, master=None, objects=None, highlight=lambda selected: print(selected)):
+    def __init__(self, master=None, objects=None, highlight=lambda selected: print(selected), update_trigger=lambda geometry: print(geometry)):
         master.title("Object Editor")
+        master.attributes('-topmost', True)  # Make the window always appear on top
         super().__init__(master)
         self.master = master
         self.objects = objects
         self.highlight = highlight
+        self.update_trigger = update_trigger
         self.grid()
         self.create_widgets()
 
@@ -43,15 +45,17 @@ class ObjectEditor(ttk.Frame):
             if obj.name == selected_object:
                 new_window = tk.Toplevel(self.master)
                 new_window.grab_set()
-                EditObject(new_window, obj, self.highlight)
+                EditObject(new_window, obj, self.highlight, self.update_trigger)
 
 
 class EditObject(ttk.Frame):
-    def __init__(self, master=None, obj: Object=None, highlight=lambda selected: print(selected)):
+    def __init__(self, master=None, obj: Object=None, highlight=lambda selected: print(selected), update_trigger=lambda geometry: print(geometry)):
         master.title("Edit Object")
+        master.attributes('-topmost', True)  # Make the window always appear on top
         super().__init__(master)
         self.master = master
         self.highlight = highlight
+        self.update_trigger = update_trigger
         self.obj = obj
         self.grid()
         self.create_widgets()
@@ -95,14 +99,16 @@ class EditObject(ttk.Frame):
 
         new_window = tk.Toplevel(self.master)
         new_window.grab_set()
-        EditGeometry(new_window, self.obj.geometries[selected_geometry])
+        EditGeometry(new_window, self.obj.geometries[selected_geometry], self.update_trigger)
 
 
 class EditGeometry(ttk.Frame):
-    def __init__(self, master=None, geometry=None):
+    def __init__(self, master=None, geometry=None, update_trigger=lambda geometry: print(geometry)):
         master.title("Edit Geometry")
+        master.attributes('-topmost', True)  # Make the window always appear on top
         super().__init__(master)
         self.master = master
+        self.update_trigger = update_trigger
         self.geometry = geometry
         self.grid()
         self.create_widgets()
@@ -160,6 +166,8 @@ class EditGeometry(ttk.Frame):
             self.geometry.scale.x, self.geometry.scale.y, self.geometry.scale.z = x, y, z
 
             self.geometry.mesh_resource = self.mesh_entry.get()
+
+            self.update_trigger(self.geometry)
         except Exception as e:
             self.show_error("Update Failed", str(e))
             return

@@ -8,6 +8,7 @@ from interactive_object import InteractiveObject
 import tkinter as tk
 
 from object_map_server import ObjectEditor
+from conversion import geometry2marker
 
 class InteractiveObjectServer:
     def __init__(self, name, objects):
@@ -61,12 +62,27 @@ class InteractiveObjectServer:
         opens object editor
         '''
         root = tk.Tk()
-        app = ObjectEditor(master=root, objects=self.objects, highlight=self.highlight)
+        app = ObjectEditor(master=root, objects=self.objects, highlight=self.highlight, update_trigger=self.update_object)
         app.mainloop()
 
         #remove highlight
         for obj in self.interactive_objects.values():
             obj.remove_highlight()
+        self.menu_handler.reApply(self.server)
+        self.server.applyChanges() 
+
+    def update_object(self, geometry):
+        print("update object: "+self.last_highlighted)
+        print(geometry)
+        for obj in self.interactive_objects.values():
+            if obj.int_marker.name != self.last_highlighted:
+                continue
+            print(obj.int_marker)
+
+            for i, marker in enumerate(obj.int_marker.controls[0].markers):
+                if marker.text == geometry.name:
+                    obj.int_marker.controls[0].markers[i] = geometry2marker(geometry, marker.header.frame_id, marker.header.frame_id, marker.id)
+
         self.menu_handler.reApply(self.server)
         self.server.applyChanges() 
 
