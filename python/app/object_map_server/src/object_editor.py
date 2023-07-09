@@ -4,12 +4,13 @@ from tkinter import ttk, messagebox
 from .interfaces import Object, Geometry
 
 class ObjectEditor(ttk.Frame):
-    def __init__(self, master=None, objects=None, highlight=lambda selected: print(selected), update_trigger=lambda geometry: print(geometry)):
+    def __init__(self, master=None, objects=None, selected=None, highlight=lambda selected: print(selected), update_trigger=lambda geometry: print(geometry)):
         master.title("Object Editor")
         master.attributes('-topmost', True)  # Make the window always appear on top
         super().__init__(master)
         self.master = master
         self.objects = objects
+        self.selected = selected
         self.highlight = highlight
         self.update_trigger = update_trigger
         self.grid()
@@ -19,8 +20,10 @@ class ObjectEditor(ttk.Frame):
         # Create a Listbox and populate it with object names
         self.listbox = tk.Listbox(self)
         self.listbox.grid(column=0, row=0, rowspan=len(self.objects))
-        for obj in self.objects:
+        for i, obj in enumerate(self.objects):
             self.listbox.insert(tk.END, obj.name)
+            if obj.name == self.selected:
+                self.listbox.selection_set(i)
 
         # Bind the <<ListboxSelect>> event to the highlight_selection method
         self.listbox.bind('<<ListboxSelect>>', self.highlight_selection)

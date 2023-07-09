@@ -61,8 +61,10 @@ class InteractiveObjectServer:
         callback from menu handler when you click on "edit"
         opens object editor
         '''
-        root = tk.Tk()
-        app = ObjectEditor(master=root, objects=self.objects, highlight=self.highlight, update_trigger=self.update_object)
+        self.highlight('object:'+feedback.marker_name)
+        self.last_highlighted = feedback.marker_name
+        root = tk.Tk() #TODO make thread safe
+        app = ObjectEditor(master=root, objects=self.objects, selected=feedback.marker_name, highlight=self.highlight, update_trigger=self.update_object)
         app.mainloop()
 
         #remove highlight
