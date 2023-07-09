@@ -39,7 +39,6 @@ class InteractiveObjectServer:
             self.p = multiprocessing.Process(target=self._create_and_run_editor, args=(self.q,))
             self.p.start()
 
-        
         #check queue
         try:
             message, data =  self.q.get(block=False)
@@ -51,20 +50,22 @@ class InteractiveObjectServer:
             self.update_object(data)
         elif message == 'close':
             print("closing editor")
-            #remove highlight
+            
+            #remove highlights
             for obj in self.interactive_objects.values():
                 obj.remove_highlight()
             self.menu_handler.reApply(self.server)
             self.server.applyChanges()
+
             self.editor_open = False
             self.is_editing = False
-            self.p.join()
+            self.p.join() #wait for editor to close
             del self.p, self.q
         else:
             print("unknown message")
        
     def _create_and_run_editor(self, q):
-        self.root = tk.Tk() #TODO make thread safe
+        self.root = tk.Tk() 
         app = ObjectEditor(master=self.root, objects=self.objects, selected=self.last_highlighted, q=q)
         app.mainloop()
      
@@ -135,8 +136,6 @@ class InteractiveObjectServer:
         self.interactive_objects[feedback.marker_name].click(feedback)
         self.menu_handler.reApply(self.server)
         self.server.applyChanges()  
-
-
 
 
     def update_object(self, geometry):
