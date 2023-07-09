@@ -142,10 +142,10 @@ def create_axis_marker(obj, size=0.1):
 def get_6_dof_controls():
     controls = []
     control = InteractiveMarkerControl()
-    control.orientation.w = 1
-    control.orientation.x = 1
-    control.orientation.y = 0
-    control.orientation.z = 0
+    control.orientation.w = 1.0
+    control.orientation.x = 1.0
+    control.orientation.y = 0.0
+    control.orientation.z = 0.0
     normalizeQuaternion(control.orientation)
     control.name = "6_dof_rotate_x"
     control.interaction_mode = InteractiveMarkerControl.ROTATE_AXIS
@@ -153,10 +153,10 @@ def get_6_dof_controls():
     controls.append(control)
 
     control = InteractiveMarkerControl()
-    control.orientation.w = 1
-    control.orientation.x = 1
-    control.orientation.y = 0
-    control.orientation.z = 0
+    control.orientation.w = 1.0
+    control.orientation.x = 1.0
+    control.orientation.y = 0.0
+    control.orientation.z = 0.0
     normalizeQuaternion(control.orientation)
     control.name = "6_dof_move_x"
     control.interaction_mode = InteractiveMarkerControl.MOVE_AXIS
@@ -164,10 +164,10 @@ def get_6_dof_controls():
     controls.append(control)
 
     control = InteractiveMarkerControl()
-    control.orientation.w = 1
-    control.orientation.x = 0
-    control.orientation.y = 1
-    control.orientation.z = 0
+    control.orientation.w = 1.0
+    control.orientation.x = 0.0
+    control.orientation.y = 1.0
+    control.orientation.z = 0.0
     normalizeQuaternion(control.orientation)
     control.name = "6_dof_rotate_y"
     control.interaction_mode = InteractiveMarkerControl.ROTATE_AXIS
@@ -175,10 +175,10 @@ def get_6_dof_controls():
     controls.append(control)
 
     control = InteractiveMarkerControl()
-    control.orientation.w = 1
-    control.orientation.x = 0
-    control.orientation.y = 1
-    control.orientation.z = 0
+    control.orientation.w = 1.0
+    control.orientation.x = 0.0
+    control.orientation.y = 1.0
+    control.orientation.z = 0.0
     normalizeQuaternion(control.orientation)
     control.name = "6_dof_move_y"
     control.interaction_mode = InteractiveMarkerControl.MOVE_AXIS
@@ -186,10 +186,10 @@ def get_6_dof_controls():
     controls.append(control)
 
     control = InteractiveMarkerControl()
-    control.orientation.w = 1
-    control.orientation.x = 0
-    control.orientation.y = 0
-    control.orientation.z = 1
+    control.orientation.w = 1.0
+    control.orientation.x = 0.0
+    control.orientation.y = 0.0
+    control.orientation.z = 1.0
     normalizeQuaternion(control.orientation)
     control.name = "6_dof_rotate_z"
     control.interaction_mode = InteractiveMarkerControl.ROTATE_AXIS
@@ -197,10 +197,10 @@ def get_6_dof_controls():
     controls.append(control)
 
     control = InteractiveMarkerControl()
-    control.orientation.w = 1
-    control.orientation.x = 0
-    control.orientation.y = 0
-    control.orientation.z = 1
+    control.orientation.w = 1.0
+    control.orientation.x = 0.0
+    control.orientation.y = 0.0
+    control.orientation.z = 1.0
     normalizeQuaternion(control.orientation)
     control.name = "6_dof_move_z"
     control.interaction_mode = InteractiveMarkerControl.MOVE_AXIS
