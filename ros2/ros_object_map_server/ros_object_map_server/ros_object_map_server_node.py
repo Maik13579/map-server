@@ -11,9 +11,10 @@ from visualization_msgs.msg import MarkerArray
 
 from object_map_server import load_objects, load_frames, Frame
 from ros_object_map_server.conversion import objects2markerarray, pose2rospose
+from ros_object_map_server.interactive_object_server import InteractiveObjectServer
 
 OBJECT_TOPIC = "/object_map_server/objects"
-RATE = 1.0
+RATE = 5.0
 
 class ObjectMapServer(Node):
     def __init__(self, object_path: str, frame_path: str):
@@ -25,6 +26,9 @@ class ObjectMapServer(Node):
         self.get_logger().info('Loading frames')
         self.root_frame = load_frames(frame_path)
         
+        #create interactive marker server
+        self.server = InteractiveObjectServer(self, "interactive_object_map_server", self.objects)
+
         # Publisher
         qos_profile = QoSProfile(depth=10)
         self.pub = self.create_publisher(MarkerArray, OBJECT_TOPIC, qos_profile)
@@ -38,6 +42,7 @@ class ObjectMapServer(Node):
     def timer_callback(self):
         self.publish_objects()
         self.publish_tf_recursiv(self.root_frame)
+        self.server.main_loop()
 
     def publish_objects(self):
         markers = objects2markerarray(self.objects)

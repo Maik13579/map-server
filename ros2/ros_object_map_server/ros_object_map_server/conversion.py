@@ -27,8 +27,21 @@ def geometry2marker(geometry: Geometry, namespace: str, frame_id: str, id: int):
     marker.scale.x = float(geometry.scale.x)
     marker.scale.y = float(geometry.scale.y)
     marker.scale.z = float(geometry.scale.z)
-    marker.text = geometry.id #this cause a warning in rviz, but it can be helpful to see the id of the object
+    marker.text = geometry.name #this cause a warning in rviz, but it can be helpful to see the id of the object
     return marker
+
+def object2markerarray(obj: list):
+    '''
+    convert object_map_server.interfaces.Object to visualization_msgs.MarkerArray
+    '''
+    marker_array = MarkerArray()
+    i = 0 #counter for id
+    for _, geometry in obj.geometries.items():
+        marker = geometry2marker(geometry, obj.name, obj.name, i)
+        marker.id = i
+        i += 1
+        marker_array.markers.append(marker)
+    return marker_array
 
 def objects2markerarray(objects: list):
     '''
@@ -36,12 +49,7 @@ def objects2markerarray(objects: list):
     '''
     marker_array = MarkerArray()
     for obj in objects:
-        i = 0 #counter for id
-        for _, geometry in obj.geometries.items():
-            marker = geometry2marker(geometry, obj.name, obj.name, i)
-            marker.id = i
-            i += 1
-            marker_array.markers.append(marker)
+        marker_array.markers.extend(object2markerarray(obj).markers)
     return marker_array
 
 def pose2rospose(pose):
