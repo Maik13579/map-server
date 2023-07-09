@@ -5,6 +5,8 @@ from geometry_msgs.msg import Pose
 
 from interactive_object import InteractiveObject
 
+import queue
+import multiprocessing
 import tkinter as tk
 
 from object_map_server import ObjectEditor
@@ -19,6 +21,52 @@ class InteractiveObjectServer:
         self.interactive_objects = self.load_objects()
 
         self.last_highlighted = None
+        self.is_editing = False
+        self.editor_open = False
+        self.root = None
+
+
+    def main_loop(self):
+        """
+        main loop to keep tkinter away from non-main threads
+        """
+        if not self.is_editing:
+            return
+        
+        if not self.editor_open: #if editor not open start it in a new process
+            self.editor_open = True
+            self.q = multiprocessing.Queue()
+            self.p = multiprocessing.Process(target=self._create_and_run_editor, args=(self.q,))
+            self.p.start()
+
+        
+        #check queue
+        try:
+            message, data =  self.q.get(block=False)
+        except queue.Empty:
+            return
+        if message == 'highlight':
+            self.highlight(data)
+        elif message == 'update':
+            self.update_object(data)
+        elif message == 'close':
+            print("closing editor")
+            #remove highlight
+            for obj in self.interactive_objects.values():
+                obj.remove_highlight()
+            self.menu_handler.reApply(self.server)
+            self.server.applyChanges()
+            self.editor_open = False
+            self.is_editing = False
+            self.p.join()
+            del self.p, self.q
+        else:
+            print("unknown message")
+       
+    def _create_and_run_editor(self, q):
+        self.root = tk.Tk() #TODO make thread safe
+        app = ObjectEditor(master=self.root, objects=self.objects, selected=self.last_highlighted, q=q)
+        app.mainloop()
      
 
     def init_menu(self):
@@ -61,17 +109,35 @@ class InteractiveObjectServer:
         callback from menu handler when you click on "edit"
         opens object editor
         '''
+        print('edit '+feedback.marker_name)
+        if self.is_editing:
+            return
+        self.is_editing = True
+
         self.highlight('object:'+feedback.marker_name)
         self.last_highlighted = feedback.marker_name
-        root = tk.Tk() #TODO make thread safe
-        app = ObjectEditor(master=root, objects=self.objects, selected=feedback.marker_name, highlight=self.highlight, update_trigger=self.update_object)
-        app.mainloop()
 
-        #remove highlight
-        for obj in self.interactive_objects.values():
-            obj.remove_highlight()
         self.menu_handler.reApply(self.server)
         self.server.applyChanges() 
+
+    def click(self, feedback):
+        '''
+        callback when you click on an object
+        '''
+        if feedback.event_type != InteractiveMarkerFeedback.BUTTON_CLICK:
+            return
+        #highlight object
+        #if self.highlighted:
+        #    self.objects[self.highlighted].remove_highlight()
+        #self.highlighted = feedback.marker_name
+        #self.objects[self.highlighted].add_highlight()
+
+        self.interactive_objects[feedback.marker_name].click(feedback)
+        self.menu_handler.reApply(self.server)
+        self.server.applyChanges()  
+
+
+
 
     def update_object(self, geometry):
         print("update object: "+self.last_highlighted)
@@ -118,20 +184,3 @@ class InteractiveObjectServer:
 
         self.menu_handler.reApply(self.server)
         self.server.applyChanges() 
-
-
-    def click(self, feedback):
-        '''
-        callback when you click on an object
-        '''
-        if feedback.event_type != InteractiveMarkerFeedback.BUTTON_CLICK:
-            return
-        #highlight object
-        #if self.highlighted:
-        #    self.objects[self.highlighted].remove_highlight()
-        #self.highlighted = feedback.marker_name
-        #self.objects[self.highlighted].add_highlight()
-
-        self.interactive_objects[feedback.marker_name].click(feedback)
-        self.menu_handler.reApply(self.server)
-        self.server.applyChanges()  

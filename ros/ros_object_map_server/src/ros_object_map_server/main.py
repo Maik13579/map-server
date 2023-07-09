@@ -11,7 +11,7 @@ from interactive_object_server import InteractiveObjectServer
 
 
 OBJECT_TOPIC = "/object_map_server/objects"
-RATE = 1.0
+RATE = 5
 
 class ObjectMapServer():
     def __init__(self, object_path: str, frame_path: str):
@@ -36,6 +36,7 @@ class ObjectMapServer():
         while not rospy.is_shutdown():
             self.publish_objects()
             self.publish_tf_recursiv(self.root_frame)
+            self.server.main_loop()
             self.rate.sleep()
 
     def publish_objects(self):

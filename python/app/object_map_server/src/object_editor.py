@@ -4,17 +4,21 @@ from tkinter import ttk, messagebox
 from .interfaces import Object, Geometry
 
 class ObjectEditor(ttk.Frame):
-    def __init__(self, master=None, objects=None, selected=None, highlight=lambda selected: print(selected), update_trigger=lambda geometry: print(geometry)):
+    def __init__(self, master=None, objects=None, selected=None, q=None):
         master.title("Object Editor")
         master.attributes('-topmost', True)  # Make the window always appear on top
+        master.protocol("WM_DELETE_WINDOW", self.on_closing)
         super().__init__(master)
         self.master = master
         self.objects = objects
         self.selected = selected
-        self.highlight = highlight
-        self.update_trigger = update_trigger
+        self.q = q
         self.grid()
         self.create_widgets()
+
+    def on_closing(self):
+        self.q.put(('close', None))
+        self.master.destroy()
 
     def create_widgets(self):
         # Create a Listbox and populate it with object names
@@ -37,7 +41,7 @@ class ObjectEditor(ttk.Frame):
         selection = self.listbox.curselection()
         if selection:
             selected_object = self.listbox.get(selection[0])
-            self.highlight("object:"+selected_object)
+            self.q.put(('highlight', "object:"+selected_object))
 
     def handle_selection(self):
         # Get the selected object name
@@ -48,17 +52,16 @@ class ObjectEditor(ttk.Frame):
             if obj.name == selected_object:
                 new_window = tk.Toplevel(self.master)
                 new_window.grab_set()
-                EditObject(new_window, obj, self.highlight, self.update_trigger)
+                EditObject(new_window, obj, self.q)
 
 
 class EditObject(ttk.Frame):
-    def __init__(self, master=None, obj: Object=None, highlight=lambda selected: print(selected), update_trigger=lambda geometry: print(geometry)):
+    def __init__(self, master=None, obj: Object=None, q=None):
         master.title("Edit Object")
         master.attributes('-topmost', True)  # Make the window always appear on top
         super().__init__(master)
         self.master = master
-        self.highlight = highlight
-        self.update_trigger = update_trigger
+        self.q = q
         self.obj = obj
         self.grid()
         self.create_widgets()
@@ -94,7 +97,7 @@ class EditObject(ttk.Frame):
         selection = self.listbox.curselection()
         if selection:
             selected_object = self.listbox.get(selection[0])
-            self.highlight("geometry:"+selected_object)
+            self.q.put(('highlight', "geometry:"+selected_object))
 
     def handle_selection(self):
         # Get the selected object name
@@ -102,16 +105,16 @@ class EditObject(ttk.Frame):
 
         new_window = tk.Toplevel(self.master)
         new_window.grab_set()
-        EditGeometry(new_window, self.obj.geometries[selected_geometry], self.update_trigger)
+        EditGeometry(new_window, self.obj.geometries[selected_geometry], self.q)
 
 
 class EditGeometry(ttk.Frame):
-    def __init__(self, master=None, geometry=None, update_trigger=lambda geometry: print(geometry)):
+    def __init__(self, master=None, geometry=None, q=None):
         master.title("Edit Geometry")
         master.attributes('-topmost', True)  # Make the window always appear on top
         super().__init__(master)
         self.master = master
-        self.update_trigger = update_trigger
+        self.q = q
         self.geometry = geometry
         self.grid()
         self.create_widgets()
@@ -170,7 +173,7 @@ class EditGeometry(ttk.Frame):
 
             self.geometry.mesh_resource = self.mesh_entry.get()
 
-            self.update_trigger(self.geometry)
+            self.q.put(('update', self.geometry))
         except Exception as e:
             self.show_error("Update Failed", str(e))
             return
