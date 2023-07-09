@@ -144,7 +144,6 @@ class InteractiveObjectServer:
         for obj in self.interactive_objects.values():
             if obj.int_marker.name != self.last_highlighted:
                 continue
-            print(obj.int_marker)
 
             for i, marker in enumerate(obj.int_marker.controls[0].markers):
                 if marker.text == geometry.name:
