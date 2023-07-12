@@ -133,21 +133,55 @@ class EditGeometry(ttk.Frame):
 
         self.color_label = ttk.Label(self, text="Color (r, g, b, a):")
         self.color_label.grid(column=0, row=2)
-        self.color_entry = ttk.Entry(self)
-        self.color_entry.grid(column=1, row=2)
-        self.color_entry.insert(0, f"{self.geometry.color.r}, {self.geometry.color.g}, {self.geometry.color.b}, {self.geometry.color.a}")
+
+        r, g, b, a = self.geometry.color.r, self.geometry.color.g, self.geometry.color.b, self.geometry.color.a
+        self.color_entry_r = ttk.Spinbox(self, from_=0.0, to=1.0, increment=0.01, command=self.update_geometry)
+        self.color_entry_r.grid(column=1, row=2)
+        self.color_entry_r.insert(0, r)
+
+        self.color_entry_g = ttk.Spinbox(self, from_=0.0, to=1.0, increment=0.01, command=self.update_geometry)
+        self.color_entry_g.grid(column=2, row=2)
+        self.color_entry_g.insert(0, g)
+
+        self.color_entry_b = ttk.Spinbox(self, from_=0.0, to=1.0, increment=0.01, command=self.update_geometry)
+        self.color_entry_b.grid(column=3, row=2)
+        self.color_entry_b.insert(0, b)
+
+        self.color_entry_a = ttk.Spinbox(self, from_=0.0, to=1.0, increment=0.01, command=self.update_geometry)
+        self.color_entry_a.grid(column=4, row=2)
+        self.color_entry_a.insert(0, a)
 
         self.pose_label = ttk.Label(self, text="Pose (x, y, z):")
         self.pose_label.grid(column=0, row=3)
-        self.pose_entry = ttk.Entry(self)
-        self.pose_entry.grid(column=1, row=3)
-        self.pose_entry.insert(0, f"{self.geometry.pose.position.x}, {self.geometry.pose.position.y}, {self.geometry.pose.position.z}")
+
+        x, y, z = self.geometry.pose.position.x, self.geometry.pose.position.y, self.geometry.pose.position.z
+        self.pose_entry_x = ttk.Spinbox(self, from_=-100.0, to=100.0, increment=0.01, command=self.update_geometry)
+        self.pose_entry_x.grid(column=1, row=3)
+        self.pose_entry_x.insert(0, x)
+
+        self.pose_entry_y = ttk.Spinbox(self, from_=-100.0, to=100.0, increment=0.01, command=self.update_geometry)
+        self.pose_entry_y.grid(column=2, row=3)
+        self.pose_entry_y.insert(0, y)
+
+        self.pose_entry_z = ttk.Spinbox(self, from_=-100.0, to=100.0, increment=0.01, command=self.update_geometry)
+        self.pose_entry_z.grid(column=3, row=3)
+        self.pose_entry_z.insert(0, z)
 
         self.scale_label = ttk.Label(self, text="Scale (x, y, z):")
         self.scale_label.grid(column=0, row=4)
-        self.scale_entry = ttk.Entry(self)
-        self.scale_entry.grid(column=1, row=4)
-        self.scale_entry.insert(0, f"{self.geometry.scale.x}, {self.geometry.scale.y}, {self.geometry.scale.z}")
+
+        x, y, z = self.geometry.scale.x, self.geometry.scale.y, self.geometry.scale.z
+        self.scale_entry_x = ttk.Spinbox(self, from_=0.0, to=100.0, increment=0.01, command=self.update_geometry)
+        self.scale_entry_x.grid(column=1, row=4)
+        self.scale_entry_x.insert(0, x)
+
+        self.scale_entry_y = ttk.Spinbox(self, from_=0.0, to=100.0, increment=0.01, command=self.update_geometry)
+        self.scale_entry_y.grid(column=2, row=4)
+        self.scale_entry_y.insert(0, y)
+
+        self.scale_entry_z = ttk.Spinbox(self, from_=0.0, to=100.0, increment=0.01, command=self.update_geometry)
+        self.scale_entry_z.grid(column=3, row=4)
+        self.scale_entry_z.insert(0, z)
 
         self.mesh_label = ttk.Label(self, text="Mesh Resource:")
         self.mesh_label.grid(column=0, row=5)
@@ -162,13 +196,13 @@ class EditGeometry(ttk.Frame):
         try:
             self.geometry.type = self.type_entry.get()
 
-            r, g, b, a = map(float, self.color_entry.get().split(', '))
+            r, g, b, a = float(self.color_entry_r.get()), float(self.color_entry_g.get()), float(self.color_entry_b.get()), float(self.color_entry_a.get())
             self.geometry.color.r, self.geometry.color.g, self.geometry.color.b, self.geometry.color.a = r, g, b, a
 
-            x, y, z = map(float, self.pose_entry.get().split(', '))
+            x, y, z = float(self.pose_entry_x.get()), float(self.pose_entry_y.get()), float(self.pose_entry_z.get())
             self.geometry.pose.position.x, self.geometry.pose.position.y, self.geometry.pose.position.z = x, y, z
 
-            x, y, z = map(float, self.scale_entry.get().split(', '))
+            x, y, z = float(self.scale_entry_x.get()), float(self.scale_entry_y.get()), float(self.scale_entry_z.get())
             self.geometry.scale.x, self.geometry.scale.y, self.geometry.scale.z = x, y, z
 
             self.geometry.mesh_resource = self.mesh_entry.get()
