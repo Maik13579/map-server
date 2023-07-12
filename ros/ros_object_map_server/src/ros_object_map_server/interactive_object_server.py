@@ -151,6 +151,15 @@ class InteractiveObjectServer:
                 if marker.text == geometry.name:
                     obj.int_marker.controls[0].markers[i] = geometry2marker(geometry, marker.header.frame_id, marker.header.frame_id, marker.id)
 
+        for obj in self.objects:
+            if obj.name != self.last_highlighted:
+                continue
+
+            for geometry_name, geometry_ in obj.geometries.items():
+                if geometry_name == geometry.name:
+                    obj.geometries[geometry_name] = geometry
+                    break
+
         self.menu_handler.reApply(self.server)
         self.server.applyChanges() 
 
