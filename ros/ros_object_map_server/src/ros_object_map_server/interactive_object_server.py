@@ -166,7 +166,7 @@ class InteractiveObjectServer:
                 if obj.int_marker.name == name:
                     obj.remove_highlight()
                 else:
-                    obj.add_highlight()
+                    obj.add_highlight(0.2)
 
         elif type_ == 'geometry':
             for obj in self.interactive_objects.values():
@@ -178,7 +178,7 @@ class InteractiveObjectServer:
                         if marker.text == name:
                             marker.color.a = 1.0
                         else:
-                            marker.color.a = 0.5
+                            marker.color.a = 0.2 if marker.text != 'bb' else 0.0
                 else:
                     obj.add_highlight(0.0)
 
