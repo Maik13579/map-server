@@ -1,17 +1,18 @@
 from interactive_markers.interactive_marker_server import *
 from visualization_msgs.msg import *
-from geometry_msgs.msg import Point
+from geometry_msgs.msg import Point, Pose
 
-from ros_object_map_server.conversion import object2markerarray, pose2rospose, rospose2pose
+from ros_object_map_server.conversion import object2markerarray, pose2rospose, rospose2pose, compose_poses
 
 class InteractiveObject:
-    def __init__(self, server, obj):
+    def __init__(self, server, obj, frame):
         self.obj = obj
+        self.frame = frame
         self.moveable = False
         self.server = server
 
         self.int_marker = InteractiveMarker()
-        self.int_marker.header.frame_id = obj.name
+        self.int_marker.header.frame_id = frame.name
         self.int_marker.name = obj.name
         self.int_marker.pose.orientation.w = 1.0
 
@@ -26,12 +27,11 @@ class InteractiveObject:
         self.int_marker.controls.append(control)
 
     def update_callback(self, feedback):
-        pose = feedback.pose
-        self.server.setPose( feedback.marker_name, pose )
+        self.update_pose = feedback.pose
+ 
+        self.server.setPose(feedback.marker_name, self.update_pose)
         self.server.applyChanges()
 
-        #update obj pose
-        #TODO
 
     def click(self, feedback):
         print("\nclicked on:")
@@ -45,6 +45,16 @@ class InteractiveObject:
             self.enable_move()
 
     def disable_move(self):
+        #reset interactive marker pose
+        self.int_marker.pose = Pose()
+        self.int_marker.pose.orientation.w = 1.0
+
+        #update object pose
+        update_pose = compose_poses(pose2rospose(self.frame.pose), self.update_pose)
+        self.frame.pose = rospose2pose(update_pose)
+
+
+
         self.moveable = False
         #remove all 6 dof controls
         controls = []
@@ -54,6 +64,10 @@ class InteractiveObject:
         self.int_marker.controls = controls
 
     def enable_move(self):
+        #init pose
+        self.update_pose = Pose()
+        self.update_pose.orientation.w = 1.0
+
         self.moveable = True
         #add 6 dof controls
         self.int_marker.controls += get_6_dof_controls()

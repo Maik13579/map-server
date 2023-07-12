@@ -27,7 +27,7 @@ class ObjectMapServer(Node):
         self.root_frame = load_frames(frame_path)
         
         #create interactive marker server
-        self.server = InteractiveObjectServer(self, "interactive_object_map_server", self.objects)
+        self.server = InteractiveObjectServer(self, "interactive_object_map_server", self.objects, self.root_frame)
 
         # Publisher
         qos_profile = QoSProfile(depth=10)

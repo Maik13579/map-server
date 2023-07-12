@@ -13,9 +13,10 @@ from object_map_server import ObjectEditor
 from ros_object_map_server.conversion import geometry2marker
 
 class InteractiveObjectServer:
-    def __init__(self, node, name, objects):
+    def __init__(self, node, name, objects, root_frame):
         self.name = name
         self.objects = objects
+        self.root_frame = root_frame
         self.server = InteractiveMarkerServer(node, self.name)
         self.menu_handler = self.init_menu()
         self.interactive_objects = self.load_objects()
@@ -85,7 +86,8 @@ class InteractiveObjectServer:
         '''
         interactive_objects = {}
         for obj in self.objects:
-            interactive_objects[obj.name] = InteractiveObject(self.server, obj)
+            frame, _ = self.root_frame.find_frame(obj.name)
+            interactive_objects[obj.name] = InteractiveObject(self.server, obj, frame)
             self.server.insert(interactive_objects[obj.name].int_marker)
 
             # set feedback callback for the interactive object

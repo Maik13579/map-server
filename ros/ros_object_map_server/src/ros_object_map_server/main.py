@@ -24,7 +24,7 @@ class ObjectMapServer():
         self.root_frame = load_frames(frame_path)
 
         #create interactive marker server
-        self.server = InteractiveObjectServer("interactive_object_map_server", self.objects)
+        self.server = InteractiveObjectServer("interactive_object_map_server", self.objects, self.root_frame)
         
         # Publisher
         self.pub = rospy.Publisher(OBJECT_TOPIC, MarkerArray, queue_size=10)
