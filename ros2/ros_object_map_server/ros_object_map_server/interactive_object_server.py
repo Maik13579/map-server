@@ -49,6 +49,14 @@ class InteractiveObjectServer:
             self.highlight(data)
         elif message == 'update':
             self.update_object(data)
+        elif message == 'add_geometry':
+            obj_name, geometry = data
+            for obj in self.objects:
+                if obj.name == obj_name:
+                    obj.geometries[geometry.name] = geometry
+                    break
+            #reload interactive markers
+            self.interactive_objects = self.load_objects()
         elif message == 'close':
             print("closing editor")
             

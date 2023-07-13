@@ -107,7 +107,7 @@ class EditObject(ttk.Frame):
             self.listbox.insert(tk.END, new_geometry_name)
 
             # Send the new geometry to the object map server
-            self.q.put(('add_geometry', new_geometry))
+            self.q.put(('add_geometry', (self.obj.name, new_geometry)))
 
     def highlight_selection(self, event):
         # Check if an item is selected
