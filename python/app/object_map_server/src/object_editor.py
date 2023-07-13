@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, simpledialog
 
 from .interfaces import Object, Geometry
 
@@ -91,6 +91,23 @@ class EditObject(ttk.Frame):
         # Create a Button that calls the handle_selection method when clicked
         self.button = ttk.Button(self, text="Select", command=self.handle_selection)
         self.button.grid(column=1, row=2)
+
+        # Add Geometry Button
+        self.add_geometry_button = ttk.Button(self, text="Add Geometry", command=self.add_geometry)
+        self.add_geometry_button.grid(column=1, row=3)
+
+    def add_geometry(self):
+        new_geometry_name = simpledialog.askstring("New Geometry", "Enter name of new geometry:", parent=self.master)
+        if new_geometry_name in self.obj.geometries:
+            messagebox.showerror("Error", "A geometry with that name already exists.")
+        else:
+            # Add the new geometry here.
+            new_geometry = Geometry(name=new_geometry_name, type='CUBE')
+            self.obj.geometries[new_geometry_name] = new_geometry
+            self.listbox.insert(tk.END, new_geometry_name)
+
+            # Send the new geometry to the object map server
+            self.q.put(('add_geometry', new_geometry))
 
     def highlight_selection(self, event):
         # Check if an item is selected
