@@ -73,13 +73,13 @@ def rospose2pose(pose):
     convert geometry_msgs.Pose to interfaces.Pose
     '''
     converted = Pose()
-    converted.position.x = pose.position.x
-    converted.position.y = pose.position.y
-    converted.position.z = pose.position.z
+    converted.position.x = float(pose.position.x)
+    converted.position.y = float(pose.position.y)
+    converted.position.z = float(pose.position.z)
     roll, pitch, yaw = tft.euler_from_quaternion([pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w])
-    converted.orientation.roll = roll
-    converted.orientation.pitch = pitch
-    converted.orientation.yaw = yaw
+    converted.orientation.roll = float(roll)
+    converted.orientation.pitch = float(pitch)
+    converted.orientation.yaw = float(yaw)
     return converted
 
 def compose_poses(pose1, pose2):
