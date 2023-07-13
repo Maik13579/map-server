@@ -461,7 +461,7 @@ def load_objects(path: str) -> List[Object]:
             objects.append(Object(object_name, object_ns, geometries))
     return objects
 
-def safe_objects(path: str, objects: List[Object]):
+def save_objects(path: str, objects: List[Object]):
     """Save all objects to the given path.
 
     Args:
@@ -538,3 +538,48 @@ def _load_frames_recursiv(parent_frame: Frame, path: str):
             parent_frame.children.append(child_frame)
             _load_frames_recursiv(child_frame, full_dir_path)
         break  # This is required to limit os.walk to one level deep.
+
+def safe_frames(path: str, root_frame: Frame):
+    """Save a file system tree to the given path.
+
+    Args:
+        path: File system path to save the file system tree to.
+        root_frame: Root Frame of the file system tree to save.
+    """
+    #check if path exists
+    if not os.path.exists(path):
+        raise ValueError("Path does not exist.")
+    
+    print('Saving file system tree...')
+    _safe_frames_recursiv(root_frame, path)  # Save file system tree.
+
+def _safe_frames_recursiv(frame: Frame, parent_path: str):
+    """Recursively save Frame objects to the file system.
+
+    Args:
+        frame: Frame object to save.
+        path: File system path to save the Frame object to.
+    """
+    frame_path = os.path.join(parent_path, frame.name)
+    os.makedirs(frame_path, exist_ok=True)
+
+    # Write pose to YAML file.
+    pose_path = os.path.join(frame_path, POSE_FILE_NAME)
+    pose_data = {
+        'position': {
+            'x': frame.pose.position.x,
+            'y': frame.pose.position.y,
+            'z': frame.pose.position.z,
+        },
+        'orientation': {
+            'roll': frame.pose.orientation.roll,
+            'pitch': frame.pose.orientation.pitch,
+            'yaw': frame.pose.orientation.yaw,
+        },
+    }
+    with open(pose_path, 'w') as f:
+        yaml.dump(pose_data, f)
+
+    # Recursively save children.
+    for child in frame.children:
+        _safe_frames_recursiv(child, frame_path)
