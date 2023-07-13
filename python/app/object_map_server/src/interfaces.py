@@ -461,7 +461,7 @@ def load_objects(path: str) -> List[Object]:
             objects.append(Object(object_name, object_ns, geometries))
     return objects
 
-def save_objects(path: str, objects: List[Object]):
+def save_objects(objects: List[Object], path: str):
     """Save all objects to the given path.
 
     Args:
@@ -539,13 +539,16 @@ def _load_frames_recursiv(parent_frame: Frame, path: str):
             _load_frames_recursiv(child_frame, full_dir_path)
         break  # This is required to limit os.walk to one level deep.
 
-def save_frames(path: str, root_frame: Frame):
+def save_frames(root_frame: Frame, path: str=None):
     """Save a file system tree to the given path.
 
     Args:
         path: File system path to save the file system tree to.
         root_frame: Root Frame of the file system tree to save.
     """
+    if path is None:
+        path = root_frame.parent #for root frame this contains the path
+    
     #check if path exists
     if not os.path.exists(path):
         raise ValueError("Path does not exist.")
