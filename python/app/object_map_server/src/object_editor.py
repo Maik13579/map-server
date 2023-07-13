@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
+from copy import deepcopy
 
 from .interfaces import Object, Geometry
 
@@ -80,13 +81,16 @@ class EditObject(ttk.Frame):
         self.object_ns_label2.grid(column=1, row=1)
 
         # Create a Listbox and populate it with geometry names
-        self.listbox = tk.Listbox(self)
-        self.listbox.grid(column=0, row=2, rowspan=len(self.obj.geometries))
-        for name in self.obj.geometries.keys():
-            self.listbox.insert(tk.END, name)
+        if len(self.obj.geometries) > 0:
+            self.listbox = tk.Listbox(self)
+            self.listbox.grid(column=0, row=2, rowspan=len(self.obj.geometries))
+            for name in self.obj.geometries.keys():
+                self.listbox.insert(tk.END, name)
 
-        # Bind the <<ListboxSelect>> event to the highlight_selection method
-        self.listbox.bind('<<ListboxSelect>>', self.highlight_selection)
+            # Bind the <<ListboxSelect>> event to the highlight_selection method
+            self.listbox.bind('<<ListboxSelect>>', self.highlight_selection)
+        else:
+            self.listbox = None
         
         # Create a Button that calls the handle_selection method when clicked
         self.button = ttk.Button(self, text="Select", command=self.handle_selection)
@@ -96,6 +100,32 @@ class EditObject(ttk.Frame):
         self.add_geometry_button = ttk.Button(self, text="Add Geometry", command=self.add_geometry)
         self.add_geometry_button.grid(column=1, row=3)
 
+        # Add Geometry Button
+        self.add_geometry_button = ttk.Button(self, text="Copy Geometry", command=self.copy_geometry)
+        self.add_geometry_button.grid(column=1, row=4)
+
+    def copy_geometry(self):
+        selection = self.listbox.curselection()
+        if selection:
+            selected_object = self.listbox.get(selection[0])
+        else:
+            messagebox.showerror("Error", "No geometry selected.")
+            return
+        
+        new_geometry_name = simpledialog.askstring("Copy Geometry", "Enter name of new geometry:", parent=self.master)
+        if new_geometry_name in self.obj.geometries:
+            messagebox.showerror("Error", "A geometry with that name already exists.")
+        else:
+            # Add the new geometry here.
+            new_geometry = deepcopy(self.obj.geometries[selected_object])
+            new_geometry.name = new_geometry_name
+            self.obj.geometries[new_geometry_name] = new_geometry
+
+            self.listbox.insert(tk.END, new_geometry_name)
+
+            # Send the new geometry to the object map server
+            self.q.put(('add_geometry', (self.obj.name, new_geometry)))
+
     def add_geometry(self):
         new_geometry_name = simpledialog.askstring("New Geometry", "Enter name of new geometry:", parent=self.master)
         if new_geometry_name in self.obj.geometries:
@@ -104,7 +134,17 @@ class EditObject(ttk.Frame):
             # Add the new geometry here.
             new_geometry = Geometry(name=new_geometry_name, type='CUBE')
             self.obj.geometries[new_geometry_name] = new_geometry
-            self.listbox.insert(tk.END, new_geometry_name)
+
+            if self.listbox is None: #create listbox if it doesn't exist
+                self.listbox = tk.Listbox(self)
+                self.listbox.grid(column=0, row=2, rowspan=len(self.obj.geometries))
+                for name in self.obj.geometries.keys():
+                    self.listbox.insert(tk.END, name)
+
+                # Bind the <<ListboxSelect>> event to the highlight_selection method
+                self.listbox.bind('<<ListboxSelect>>', self.highlight_selection)
+            else:
+                self.listbox.insert(tk.END, new_geometry_name)
 
             # Send the new geometry to the object map server
             self.q.put(('add_geometry', (self.obj.name, new_geometry)))
