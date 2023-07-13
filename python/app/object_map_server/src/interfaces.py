@@ -539,7 +539,7 @@ def _load_frames_recursiv(parent_frame: Frame, path: str):
             _load_frames_recursiv(child_frame, full_dir_path)
         break  # This is required to limit os.walk to one level deep.
 
-def safe_frames(path: str, root_frame: Frame):
+def save_frames(path: str, root_frame: Frame):
     """Save a file system tree to the given path.
 
     Args:
@@ -551,9 +551,9 @@ def safe_frames(path: str, root_frame: Frame):
         raise ValueError("Path does not exist.")
     
     print('Saving file system tree...')
-    _safe_frames_recursiv(root_frame, path)  # Save file system tree.
+    _save_frames_recursiv(root_frame, path)  # Save file system tree.
 
-def _safe_frames_recursiv(frame: Frame, parent_path: str):
+def _save_frames_recursiv(frame: Frame, parent_path: str):
     """Recursively save Frame objects to the file system.
 
     Args:
@@ -582,4 +582,4 @@ def _safe_frames_recursiv(frame: Frame, parent_path: str):
 
     # Recursively save children.
     for child in frame.children:
-        _safe_frames_recursiv(child, frame_path)
+        _save_frames_recursiv(child, frame_path)
