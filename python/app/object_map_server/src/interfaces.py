@@ -480,8 +480,7 @@ def save_objects(objects: List[Object], path: str):
             yaml.dump(obj.geometries, f)
 
 
-
-def load_frames(path: str) -> Frame:
+def load_frames(path: str, root_frame_name: str) -> Frame:
     """Load a file system tree from the given path.
 
     Args:
@@ -491,14 +490,14 @@ def load_frames(path: str) -> Frame:
         Root Frame of the loaded file system tree.
     """
     #check if path exists
-    if not os.path.exists(path):
-        raise ValueError("Path does not exist.")
-    
-    parent_path, frame_name = path.rsplit('/',1)
-    root_frame = Frame(frame_name, parent_path)  # Initialize root Frame.
+    root_path = os.path.join(path, root_frame_name)
+    if not os.path.exists(root_path):
+        raise ValueError("Path "+root_path+" does not exist.")
+   
+    root_frame = Frame(root_frame_name, path)  # Initialize root Frame.
 
     print('Loading file system tree...')
-    _load_frames_recursiv(root_frame, path)  # Load file system tree.
+    _load_frames_recursiv(root_frame, root_path)  # Load file system tree.
 
     # Check whether there are duplicate frame names.
     if root_frame.has_duplicate_names():
@@ -539,16 +538,13 @@ def _load_frames_recursiv(parent_frame: Frame, path: str):
             _load_frames_recursiv(child_frame, full_dir_path)
         break  # This is required to limit os.walk to one level deep.
 
-def save_frames(root_frame: Frame, path: str=None):
+def save_frames(root_frame: Frame, path: str):
     """Save a file system tree to the given path.
 
     Args:
         path: File system path to save the file system tree to.
         root_frame: Root Frame of the file system tree to save.
     """
-    if path is None:
-        path = root_frame.parent #for root frame this contains the path
-    
     #check if path exists
     if not os.path.exists(path):
         raise ValueError("Path does not exist.")

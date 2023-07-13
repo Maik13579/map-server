@@ -1,131 +1,131 @@
-bb: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+bb: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
     a: 0.0
     b: 0
     g: 0
     r: 0
-  name: bb
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  name: bb
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.0
       y: 0.0
       z: 0.38
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 1.5
     y: 0.7
     z: 0.76
   type: CUBE
-leg_1: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+leg_1: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.07450980392156863
     g: 0.27058823529411763
     r: 0.5450980392156862
-    a: 1.0
+  mesh_resource: ''
   name: leg_1
-  mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: -0.7
       y: 0.3375
       z: 0.38
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.1
     y: 0.025
     z: 0.76
   type: CUBE
-leg_2: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+leg_2: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.07450980392156863
     g: 0.27058823529411763
     r: 0.5450980392156862
-    a: 1.0
+  mesh_resource: ''
   name: leg_2
-  mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.7
       y: 0.3375
       z: 0.38
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.1
     y: 0.025
     z: 0.76
   type: CUBE
-leg_3: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+leg_3: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.07450980392156863
     g: 0.27058823529411763
     r: 0.5450980392156862
-    a: 1.0
-  name: leg_3
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  name: leg_3
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.7
       y: -0.3375
       z: 0.38
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.1
     y: 0.025
     z: 0.76
   type: CUBE
-leg_4: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+leg_4: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.07450980392156863
     g: 0.27058823529411763
     r: 0.5450980392156862
-    a: 1.0
-  name: leg_4
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  name: leg_4
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: -0.7
       y: -0.3375
       z: 0.38
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.1
     y: 0.025
     z: 0.76
   type: CUBE
-plate: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+plate: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.07450980392156863
     g: 0.27058823529411763
     r: 0.5450980392156862
-    a: 1.0
-  name: plate
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  name: plate
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.0
       y: 0.0
       z: 0.7475
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 1.5
     y: 0.7
     z: 0.025

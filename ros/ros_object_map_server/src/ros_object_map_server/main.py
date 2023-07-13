@@ -16,7 +16,7 @@ OBJECT_TOPIC = "/object_map_server/objects"
 RATE = 5
 
 class ObjectMapServer():
-    def __init__(self, object_path: str, frame_path: str):
+    def __init__(self, object_path: str, frame_path: str, root_frame_name: str='map'):
         rospy.init_node("object_map_server", anonymous=True)
 
         #create service
@@ -29,7 +29,8 @@ class ObjectMapServer():
         
         rospy.loginfo("Loading frames")
         self.frame_path = frame_path
-        self.root_frame = load_frames(self.frame_path)
+        self.root_frame_name = root_frame_name
+        self.root_frame = load_frames(self.frame_path, self.root_frame_name)
 
         #create interactive marker server
         self.server = InteractiveObjectServer("interactive_object_map_server", self.objects, self.root_frame)
@@ -52,7 +53,6 @@ class ObjectMapServer():
         rospy.loginfo('Saving...')
         try:
             frame_path = request.frame_path if request.frame_path!='' else self.frame_path
-            frame_path = frame_path.rsplit('/', 1)[0] #remove filename
             object_path = request.object_path if request.object_path!='' else self.object_path
             save_frames(self.root_frame, frame_path)
             save_objects(self.objects, object_path)
@@ -61,7 +61,7 @@ class ObjectMapServer():
             response.message = str(e)
             return response
         #remember paths
-        self.frame_path = frame_path+"/"+self.root_frame.name
+        self.frame_path = frame_path
         self.object_path = object_path
         response.success = True
         response.message = "Saved objects at " + self.object_path + " and frames at " + self.frame_path
@@ -72,22 +72,20 @@ class ObjectMapServer():
         rospy.loginfo('Loading...')
         try:
             frame_path = request.frame_path if request.frame_path!='' else self.frame_path
+            root_frame_name = request.root_frame_name if request.root_frame_name!='' else self.root_frame_name
             object_path = request.object_path if request.object_path!='' else self.object_path
             self.objects = load_objects(object_path)
-            self.root_frame = load_frames(frame_path)
+            self.root_frame = load_frames(frame_path, self.root_frame_name)
         except Exception as e:
             response.success = False
             response.message = str(e)
             return response
         
-        
-        rospy.loginfo('Loading objects')
+        #remember paths
         self.object_path = object_path
-        self.objects = load_objects(self.object_path)
-        
-        rospy.loginfo('Loading frames')
         self.frame_path = frame_path
-        self.root_frame = load_frames(self.frame_path)
+        self.root_frame_name = root_frame_name
+   
         
         #update interactive marker server
         self.server.objects = self.objects

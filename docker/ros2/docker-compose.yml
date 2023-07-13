@@ -17,4 +17,4 @@ services:
       - /dev/shm:/dev/shm
       - /tmp/.X11-unix:/tmp/.X11-unix
       - $HOME/.Xauthority:/root/.Xauthority
-    command: ros2 run ros_object_map_server ros_object_map_server_node /example/robocup_2023/map /example/robocup_2023/objects
+    command: ros2 run ros_object_map_server ros_object_map_server_node /example/robocup_2023/frames /example/robocup_2023/objects
