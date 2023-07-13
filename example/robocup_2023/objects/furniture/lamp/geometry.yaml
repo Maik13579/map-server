@@ -1,43 +1,43 @@
-base: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+base: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.2
     g: 0.2
     r: 0.2
-    a: 1.0
-  name: base
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
-      roll: 0.0
+  name: base
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
+      roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.0
       y: 0.0
       z: 0.025
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.3
     y: 0.3
     z: 0.05
   type: CYLINDER
-pole: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+pole: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.2
     g: 0.2
     r: 0.2
-    a: 1.0
-  name: pole
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
-      roll: 0.0
+  name: pole
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
+      roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.0
       y: 0.0
       z: 1.0
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.03
     y: 0.03
     z: 2.0

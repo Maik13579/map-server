@@ -1,131 +1,131 @@
-east_wall: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+east_wall: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 1.0
     g: 1.0
     r: 1.0
-    a: 1.0
-  name: east_wall
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
-      roll: 0.0
+  name: east_wall
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
+      roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 1.75
       y: 0.0
       z: 0.5
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.02
     y: 4.5
     z: 1.0
   type: CUBE
-north_wall: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+north_wall: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 1.0
     g: 1.0
     r: 1.0
-    a: 1.0
-  name: north_wall
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
-      roll: 0.0
+  name: north_wall
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
+      roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.0
       y: 2.25
       z: 0.5
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 3.5
     y: 0.02
     z: 1.0
   type: CUBE
-south_wall_1: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+south_wall_1: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 1.0
     g: 1.0
     r: 1.0
-    a: 1.0
-  name: south_wall_1
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
-      roll: 0.0
+  name: south_wall_1
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
+      roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.75
       y: -2.25
       z: 0.5
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 2.0
     y: 0.02
     z: 1.0
   type: CUBE
-south_wall_2: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+south_wall_2: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 1.0
     g: 1.0
     r: 1.0
-    a: 1.0
-  name: south_wall_2
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
-      roll: 0.0
+  name: south_wall_2
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
+      roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: -1.5
       y: -2.25
       z: 0.5
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.5
     y: 0.02
     z: 1.0
   type: CUBE
-west_wall_1: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+west_wall_1: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 1.0
     g: 1.0
     r: 1.0
-    a: 1.0
-  name: west_wall_1
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
-      roll: 0.0
+  name: west_wall_1
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
+      roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: -1.75
       y: 1.5
       z: 0.5
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.02
     y: 1.5
     z: 1.0
   type: CUBE
-west_wall_2: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+west_wall_2: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 1.0
     g: 1.0
     r: 1.0
-    a: 1.0
-  name: west_wall_2
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
-      roll: 0.0
+  name: west_wall_2
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
+      roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: -1.75
       y: -1.25
       z: 0.5
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.02
     y: 2.0
     z: 1.0

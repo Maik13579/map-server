@@ -1,197 +1,197 @@
-leg_1: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+leg_1: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.7
     g: 0.7
     r: 0.7
-    a: 1.0
+  mesh_resource: ''
   name: leg_1
-  mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.45
       y: -0.205
       z: 0.8
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.02
     y: 0.02
     z: 1.6
   type: CYLINDER
-leg_2: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+leg_2: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.7
     g: 0.7
     r: 0.7
-    a: 1.0
+  mesh_resource: ''
   name: leg_2
-  mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.45
       y: 0.205
       z: 0.8
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.02
     y: 0.02
     z: 1.6
   type: CYLINDER
-leg_3: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+leg_3: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.7
     g: 0.7
     r: 0.7
-    a: 1.0
-  name: leg_3
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  name: leg_3
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: -0.45
       y: -0.205
       z: 0.8
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.02
     y: 0.02
     z: 1.6
   type: CYLINDER
-leg_4: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+leg_4: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.7
     g: 0.7
     r: 0.7
-    a: 1.0
-  name: leg_4
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  name: leg_4
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: -0.45
       y: 0.205
       z: 0.8
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.02
     y: 0.02
     z: 1.6
   type: CYLINDER
-shelf_1: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+shelf_1: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.7
     g: 0.7
     r: 0.7
-    a: 1.0
-  name: shelf_1
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  name: shelf_1
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.0
       y: 0.0
       z: 0.05
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.92
     y: 0.45
     z: 0.02
   type: CUBE
-shelf_2: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+shelf_2: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.7
     g: 0.7
     r: 0.7
-    a: 1.0
-  name: shelf_2
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  name: shelf_2
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.0
       y: 0.0
       z: 0.4
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.92
     y: 0.45
     z: 0.02
   type: CUBE
-shelf_3: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+shelf_3: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.7
     g: 0.7
     r: 0.7
-    a: 1.0
-  name: shelf_3
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  name: shelf_3
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.0
       y: 0.0
       z: 0.8
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.92
     y: 0.45
     z: 0.02
   type: CUBE
-shelf_4: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+shelf_4: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.7
     g: 0.7
     r: 0.7
-    a: 1.0
-  name: shelf_4
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  name: shelf_4
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.0
       y: 0.0
       z: 1.2
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.92
     y: 0.45
     z: 0.02
   type: CUBE
-shelf_5: !!python/object:object_map_server.Geometry
-  color: !!python/object:object_map_server.Color
+shelf_5: !!python/object:object_map_server.src.interfaces.Geometry
+  color: !!python/object:object_map_server.src.interfaces.Color
+    a: 1.0
     b: 0.7
     g: 0.7
     r: 0.7
-    a: 1.0
-  name: shelf_5
   mesh_resource: ''
-  pose: !!python/object:object_map_server.Pose
-    orientation: !!python/object:object_map_server.Orientation
+  name: shelf_5
+  pose: !!python/object:object_map_server.src.interfaces.Pose
+    orientation: !!python/object:object_map_server.src.interfaces.Orientation
       pitch: 0.0
       roll: 0.0
       yaw: 0.0
-    position: !!python/object:object_map_server.Vector3
+    position: !!python/object:object_map_server.src.interfaces.Vector3
       x: 0.0
       y: 0.0
       z: 1.6
-  scale: !!python/object:object_map_server.Vector3
+  scale: !!python/object:object_map_server.src.interfaces.Vector3
     x: 0.92
     y: 0.45
     z: 0.02
