@@ -141,6 +141,12 @@ class Object:
         defines string conversion
         '''
         return os.path.join(self.ns, str(self.name))
+    
+    def get_path(self):
+        '''
+        returns the path of the object
+        '''
+        return os.path.join(self.ns, str(self.name))
 
 class Frame:
     """Class to represent a directory in the file system tree."""
@@ -455,6 +461,24 @@ def load_objects(path: str) -> List[Object]:
             objects.append(Object(object_name, object_ns, geometries))
     return objects
 
+def safe_objects(path: str, objects: List[Object]):
+    """Save all objects to the given path.
+
+    Args:
+        path: File system path to save the objects to.
+        objects: List of Objects to save.
+    """
+    #check if path exists
+    if not os.path.exists(path):
+        raise ValueError("Path does not exist.")
+    
+    for obj in objects:
+        obj_path = os.path.join(path, obj.get_path())
+        print(f"Saving object {obj_path}")
+        os.makedirs(obj_path, exist_ok=True)
+        with open(os.path.join(obj_path, GEOMETRY_FILE_NAME), 'w') as f:
+            yaml.dump(obj.geometries, f)
+
 
 
 def load_frames(path: str) -> Frame:
@@ -492,28 +516,22 @@ def _load_frames_recursiv(parent_frame: Frame, path: str):
     """
     for dirpath, dirnames, filenames in os.walk(path):
         # Look for the POSE_FILE_NAME file in the current directory.
-        if POSE_FILE_NAME in filenames:
-            pose_path = os.path.join(dirpath, POSE_FILE_NAME)
-            with open(pose_path, 'r') as f:
-                data = yaml.safe_load(f)
-                position_data = data.get('position', {})
-                orientation_data = data.get('orientation', {})
-                position = Vector3(position_data.get('x', 0.0), 
-                                    position_data.get('y', 0.0), 
-                                    position_data.get('z', 0.0))
-                orientation = Orientation(orientation_data.get('roll', 0.0), 
-                                          orientation_data.get('pitch', 0.0), 
-                                          orientation_data.get('yaw', 0.0))
-                parent_frame.pose = Pose(position, orientation)
-        else:
-            # If POSE_FILE_NAME is not found, use default pose.
-            default_pose = Pose(Vector3(), Orientation())
-            parent_frame.pose = default_pose
-
-            # Create pose.yaml file in the new directory.
-            with open(os.path.join(dirpath, POSE_FILE_NAME), 'w') as f:
-                yaml.dump(default_pose.get_dict(), f)
-
+        if POSE_FILE_NAME not in filenames:
+            continue
+        
+        pose_path = os.path.join(dirpath, POSE_FILE_NAME)
+        with open(pose_path, 'r') as f:
+            data = yaml.safe_load(f)
+            position_data = data.get('position', {})
+            orientation_data = data.get('orientation', {})
+            position = Vector3(position_data.get('x', 0.0), 
+                                position_data.get('y', 0.0), 
+                                position_data.get('z', 0.0))
+            orientation = Orientation(orientation_data.get('roll', 0.0), 
+                                        orientation_data.get('pitch', 0.0), 
+                                        orientation_data.get('yaw', 0.0))
+            parent_frame.pose = Pose(position, orientation)
+        
         for dirname in dirnames:
             full_dir_path = os.path.join(dirpath, dirname)
             child_frame = Frame(dirname, parent_frame, Pose(Vector3(), Orientation()))
