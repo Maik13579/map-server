@@ -1,0 +1,7 @@
+string object_path
+string frame_path
+
+---
+
+bool success
+string message
