@@ -2,11 +2,11 @@ ARG ROS_DISTRO=noetic
 
 FROM ros-base-image:$ROS_DISTRO
 
-## Install deps
-#RUN apt update \
-# && apt install -y \
-#    stuff_to_install \
-# && rm -rf /var/lib/apt/lists/*
+# Install deps
+RUN apt update \
+ && apt install -y \
+    ros-$ROS_DISTRO-gazebo-ros-pkgs \
+ && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /root/catkin_ws
 
