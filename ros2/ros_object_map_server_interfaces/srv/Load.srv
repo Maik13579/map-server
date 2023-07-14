@@ -1,0 +1,8 @@
+string object_path
+string frame_path
+string root_frame_name #default is 'map'
+
+---
+
+bool success
+string message

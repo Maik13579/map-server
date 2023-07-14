@@ -140,7 +140,13 @@ class Object:
         '''
         defines string conversion
         '''
-        return os.path.join(self.ns, str(self.id))
+        return os.path.join(self.ns, str(self.name))
+    
+    def get_path(self):
+        '''
+        returns the path of the object
+        '''
+        return os.path.join(self.ns, str(self.name))
 
 class Frame:
     """Class to represent a directory in the file system tree."""
@@ -455,9 +461,26 @@ def load_objects(path: str) -> List[Object]:
             objects.append(Object(object_name, object_ns, geometries))
     return objects
 
+def save_objects(objects: List[Object], path: str):
+    """Save all objects to the given path.
+
+    Args:
+        path: File system path to save the objects to.
+        objects: List of Objects to save.
+    """
+    #check if path exists
+    if not os.path.exists(path):
+        raise ValueError("Path does not exist.")
+    
+    for obj in objects:
+        obj_path = os.path.join(path, obj.get_path())
+        print(f"Saving object {obj_path}")
+        os.makedirs(obj_path, exist_ok=True)
+        with open(os.path.join(obj_path, GEOMETRY_FILE_NAME), 'w') as f:
+            yaml.dump(obj.geometries, f)
 
 
-def load_frames(path: str) -> Frame:
+def load_frames(path: str, root_frame_name: str) -> Frame:
     """Load a file system tree from the given path.
 
     Args:
@@ -467,14 +490,14 @@ def load_frames(path: str) -> Frame:
         Root Frame of the loaded file system tree.
     """
     #check if path exists
-    if not os.path.exists(path):
-        raise ValueError("Path does not exist.")
-    
-    parent_path, frame_name = path.rsplit('/',1)
-    root_frame = Frame(frame_name, parent_path)  # Initialize root Frame.
+    root_path = os.path.join(path, root_frame_name)
+    if not os.path.exists(root_path):
+        raise ValueError("Path "+root_path+" does not exist.")
+   
+    root_frame = Frame(root_frame_name, path)  # Initialize root Frame.
 
     print('Loading file system tree...')
-    _load_frames_recursiv(root_frame, path)  # Load file system tree.
+    _load_frames_recursiv(root_frame, root_path)  # Load file system tree.
 
     # Check whether there are duplicate frame names.
     if root_frame.has_duplicate_names():
@@ -492,31 +515,70 @@ def _load_frames_recursiv(parent_frame: Frame, path: str):
     """
     for dirpath, dirnames, filenames in os.walk(path):
         # Look for the POSE_FILE_NAME file in the current directory.
-        if POSE_FILE_NAME in filenames:
-            pose_path = os.path.join(dirpath, POSE_FILE_NAME)
-            with open(pose_path, 'r') as f:
-                data = yaml.safe_load(f)
-                position_data = data.get('position', {})
-                orientation_data = data.get('orientation', {})
-                position = Vector3(position_data.get('x', 0.0), 
-                                    position_data.get('y', 0.0), 
-                                    position_data.get('z', 0.0))
-                orientation = Orientation(orientation_data.get('roll', 0.0), 
-                                          orientation_data.get('pitch', 0.0), 
-                                          orientation_data.get('yaw', 0.0))
-                parent_frame.pose = Pose(position, orientation)
-        else:
-            # If POSE_FILE_NAME is not found, use default pose.
-            default_pose = Pose(Vector3(), Orientation())
-            parent_frame.pose = default_pose
-
-            # Create pose.yaml file in the new directory.
-            with open(os.path.join(dirpath, POSE_FILE_NAME), 'w') as f:
-                yaml.dump(default_pose.get_dict(), f)
-
+        if POSE_FILE_NAME not in filenames:
+            continue
+        
+        pose_path = os.path.join(dirpath, POSE_FILE_NAME)
+        with open(pose_path, 'r') as f:
+            data = yaml.safe_load(f)
+            position_data = data.get('position', {})
+            orientation_data = data.get('orientation', {})
+            position = Vector3(position_data.get('x', 0.0), 
+                                position_data.get('y', 0.0), 
+                                position_data.get('z', 0.0))
+            orientation = Orientation(orientation_data.get('roll', 0.0), 
+                                        orientation_data.get('pitch', 0.0), 
+                                        orientation_data.get('yaw', 0.0))
+            parent_frame.pose = Pose(position, orientation)
+        
         for dirname in dirnames:
             full_dir_path = os.path.join(dirpath, dirname)
             child_frame = Frame(dirname, parent_frame, Pose(Vector3(), Orientation()))
             parent_frame.children.append(child_frame)
             _load_frames_recursiv(child_frame, full_dir_path)
         break  # This is required to limit os.walk to one level deep.
+
+def save_frames(root_frame: Frame, path: str):
+    """Save a file system tree to the given path.
+
+    Args:
+        path: File system path to save the file system tree to.
+        root_frame: Root Frame of the file system tree to save.
+    """
+    #check if path exists
+    if not os.path.exists(path):
+        raise ValueError("Path does not exist.")
+    
+    print('Saving file system tree...')
+    _save_frames_recursiv(root_frame, path)  # Save file system tree.
+
+def _save_frames_recursiv(frame: Frame, parent_path: str):
+    """Recursively save Frame objects to the file system.
+
+    Args:
+        frame: Frame object to save.
+        path: File system path to save the Frame object to.
+    """
+    frame_path = os.path.join(parent_path, frame.name)
+    os.makedirs(frame_path, exist_ok=True)
+
+    # Write pose to YAML file.
+    pose_path = os.path.join(frame_path, POSE_FILE_NAME)
+    pose_data = {
+        'position': {
+            'x': frame.pose.position.x,
+            'y': frame.pose.position.y,
+            'z': frame.pose.position.z,
+        },
+        'orientation': {
+            'roll': frame.pose.orientation.roll,
+            'pitch': frame.pose.orientation.pitch,
+            'yaw': frame.pose.orientation.yaw,
+        },
+    }
+    with open(pose_path, 'w') as f:
+        yaml.dump(pose_data, f)
+
+    # Recursively save children.
+    for child in frame.children:
+        _save_frames_recursiv(child, frame_path)
