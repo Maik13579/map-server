@@ -87,6 +87,20 @@ def object_as_sdf(object: Object) -> str:
             length_collision.text = str(geometry.scale.z)
             length_visual.text = str(geometry.scale.z)
 
+        elif geometry.type == 'MESH_RESOURCE':
+            mesh_collision = SubElement(geometry_collision, 'mesh')
+            uri_collision = SubElement(mesh_collision, 'uri')
+            uri_collision.text = geometry.mesh_resource
+            scale_collision = SubElement(mesh_collision, 'scale')
+            scale_collision.text = '{} {} {}'.format(geometry.scale.x, geometry.scale.y, geometry.scale.z)
+
+            mesh_visual = SubElement(geometry_visual, 'mesh')
+            uri_visual = SubElement(mesh_visual, 'uri')
+            uri_visual.text = geometry.mesh_resource
+            scale_visual = SubElement(mesh_visual, 'scale')
+            scale_visual.text = '{} {} {}'.format(geometry.scale.x, geometry.scale.y, geometry.scale.z)
+
+
         else:
             print('Marker type {} is not supported.'.format(geometry.type))
 
