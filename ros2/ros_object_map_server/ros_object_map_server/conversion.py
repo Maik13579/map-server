@@ -18,7 +18,7 @@ def geometry2marker(geometry: Geometry, namespace: str, frame_id: str, id: int):
     marker.ns = namespace
     marker.id = id
     marker.type = MARKER_TYPE[geometry.type] #convert type
-    marker.mesh_resource = geometry.mesh_resource if geometry.type == "MESH_RESOURCE" else ""
+    marker.mesh_resource = 'file://'+geometry.mesh_resource if geometry.type == "MESH_RESOURCE" else ""
     marker.pose = pose2rospose(geometry.pose)
     marker.color.a = float(geometry.color.a)
     marker.color.r = float(geometry.color.r)

@@ -2,15 +2,17 @@
 
 import rospy
 import tf2_ros
-from geometry_msgs.msg import TransformStamped
+from geometry_msgs.msg import TransformStamped, Pose
 from visualization_msgs.msg import MarkerArray
 
-from object_map_server import load_objects, load_frames, Frame, save_objects, save_frames
-from conversion import objects2markerarray, pose2rospose
+from object_map_server import load_objects, load_frames, Frame, save_objects, save_frames, object_as_sdf
+from conversion import objects2markerarray, pose2rospose, compose_poses
 from interactive_object_server import InteractiveObjectServer
 
 from ros_object_map_server_interfaces.srv import Save, Load, SaveResponse, LoadResponse
+from std_srvs.srv import Trigger, TriggerResponse
 
+from gazebo_msgs.srv import SpawnModel
 
 OBJECT_TOPIC = "/object_map_server/objects"
 RATE = 5
@@ -22,6 +24,7 @@ class ObjectMapServer():
         #create service
         self.save_service = rospy.Service('object_map_server/save', Save, self.service_save)
         self.load_service = rospy.Service('object_map_server/load', Load, self.service_load)
+        self.spawn_gazebo_service = rospy.Service('object_map_server/spawn_gazebo', Trigger, self.service_spawn_gazebo)
         
         rospy.loginfo("Loading objects")
         self.object_path = object_path
@@ -47,6 +50,34 @@ class ObjectMapServer():
             self.publish_tf_recursiv(self.root_frame)
             self.server.main_loop()
             self.rate.sleep()
+
+    def service_spawn_gazebo(self, request):
+        response = TriggerResponse()
+        rospy.loginfo('Spawning objects in gazebo...')
+        try:
+            #create service client
+            cli = rospy.ServiceProxy('/gazebo/spawn_sdf_model', SpawnModel)
+            self.spawn_gazebo_recusriv(self.root_frame, Pose(), cli)
+        except Exception as e:
+            response.success = False
+            response.message = str(e)
+            return response
+        response.success = True
+        response.message = "Spawned objects in gazebo"
+        return response
+    
+    def spawn_gazebo_recusriv(self, frame, parent_pose, cli):
+        frame_pose = compose_poses(parent_pose, pose2rospose(frame.pose))
+
+        #find object with same name as frame
+        for obj in self.objects:
+            if obj.name == frame.name:
+                #spawn object
+                xml = object_as_sdf(obj)
+                cli(obj.name, xml, '', frame_pose, '')
+                break
+        for child in frame.children:
+            self.spawn_gazebo_recusriv(child, frame_pose, cli)
 
     def service_save(self, request):
         response = SaveResponse()

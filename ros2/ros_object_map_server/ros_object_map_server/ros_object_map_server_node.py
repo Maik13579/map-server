@@ -6,14 +6,19 @@ from rclpy.executors import MultiThreadedExecutor
 from rclpy.qos import QoSProfile
 
 from tf2_ros import TransformBroadcaster, StaticTransformBroadcaster
-from geometry_msgs.msg import TransformStamped
+from geometry_msgs.msg import TransformStamped, Pose
 from visualization_msgs.msg import MarkerArray
 
-from object_map_server import load_objects, load_frames, Frame, save_objects, save_frames
-from ros_object_map_server.conversion import objects2markerarray, pose2rospose
+from object_map_server import load_objects, load_frames, Frame, save_objects, save_frames, object_as_sdf
+from ros_object_map_server.conversion import objects2markerarray, pose2rospose, compose_poses
 from ros_object_map_server.interactive_object_server import InteractiveObjectServer
 
 from ros_object_map_server_interfaces.srv import Save, Load
+from std_srvs.srv import Trigger
+
+from gazebo_msgs.srv import SpawnEntity
+
+import time
 
 OBJECT_TOPIC = "/object_map_server/objects"
 RATE = 5.0
@@ -25,6 +30,7 @@ class ObjectMapServer(Node):
         #Create service
         self.save_service = self.create_service(Save, 'object_map_server/save', self.service_save)
         self.load_service = self.create_service(Load, 'object_map_server/load', self.service_load)
+        self.spawn_gazebo_service = self.create_service(Trigger, 'object_map_server/spawn_gazebo', self.service_spawn_gazebo)
         
         self.get_logger().info('Loading objects')
         self.object_path = object_path
@@ -52,6 +58,41 @@ class ObjectMapServer(Node):
         self.publish_objects()
         self.publish_tf_recursiv(self.root_frame)
         self.server.main_loop()
+
+    def service_spawn_gazebo(self, request, response):
+        self.get_logger().info('Spawning objects in gazebo...')
+        try:
+            #create service client
+            cli = self.create_client(SpawnEntity, '/spawn_entity')
+            if not cli.service_is_ready():
+                cli.wait_for_service(timeout_sec=5.0)
+            
+            self.spawn_gazebo_recusriv(self.root_frame, Pose(), cli)
+                
+        except Exception as e:
+            response.success = False
+            response.message = str(e)
+            return response
+        response.success = True
+        response.message = "Spawned objects in gazebo"
+        return response        
+    
+    def spawn_gazebo_recusriv(self, frame, parent_pose, cli):
+        frame_pose = compose_poses(parent_pose, pose2rospose(frame.pose))
+
+        #find object with same name as frame
+        for obj in self.objects:
+            if obj.name == frame.name:
+                #spawn object
+                xml = object_as_sdf(obj)
+                req = SpawnEntity.Request(name=obj.name, xml=xml,
+                                          robot_namespace='', initial_pose=frame_pose,
+                                          reference_frame='')
+                cli.call_async(req)
+                time.sleep(0.5)
+                break
+        for child in frame.children:
+            self.spawn_gazebo_recusriv(child, frame_pose, cli)
 
     def service_save(self, request, response):
         self.get_logger().info('Saving...')
