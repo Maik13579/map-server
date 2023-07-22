@@ -78,7 +78,7 @@ class ObjectMapServer():
             response.message = str(e)
             return response
         response.success = True
-        response.message = "Generated occupancy grid in frame " + self.root_frame_name + " with size 10x10m and resolution 0.04m"
+        response.message = "Generated occupancy grid in frame " + self.root_frame_name + " with size 10x10m and resolution 0.04m, published at " + MAP_TOPIC
         return response
 
     def service_spawn_gazebo(self, request):
