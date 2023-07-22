@@ -58,6 +58,12 @@ def object_as_sdf(object: Object) -> str:
         visual = SubElement(link, 'visual')
         visual.set('name', 'visual')
 
+        # Add color to visual
+        material = SubElement(visual, 'material')
+        ambient = SubElement(material, 'ambient')
+        ambient.text = '{} {} {} {}'.format(geometry.color.r, geometry.color.g, geometry.color.b, geometry.color.a)
+        
+
         geometry_visual = SubElement(visual, 'geometry')
         if geometry.type == 'CUBE':
             cube_collision = SubElement(geometry_collision, 'box')
