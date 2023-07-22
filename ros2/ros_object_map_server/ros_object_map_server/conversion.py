@@ -3,6 +3,7 @@
 import tf_transformations as tft
 from visualization_msgs.msg import Marker, MarkerArray
 from geometry_msgs.msg import Pose as RosPose
+from nav_msgs.msg import OccupancyGrid
 from object_map_server import Pose, Geometry
 import numpy as np
 
@@ -111,3 +112,29 @@ def compose_poses(pose1, pose2):
     composed_pose.orientation.w = composed_quat[3]
 
     return composed_pose
+
+
+def create_occupancy_grid(resolution, frame_id, img, width, height):
+    occupancy_grid = OccupancyGrid()
+    occupancy_grid.info.resolution = resolution
+    #occupancy_grid.header.stamp = # set time in ros node
+    occupancy_grid.header.frame_id = frame_id
+
+    #occupancy_grid.info.map_load_time = # set time in ros node
+    occupancy_grid.info.width = width
+    occupancy_grid.info.height = height
+    occupancy_grid.info.origin.position.x = -width/2 * resolution
+    occupancy_grid.info.origin.position.y = -height/2 *resolution
+    occupancy_grid.info.origin.position.z = 0.1
+    occupancy_grid.info.origin.orientation.w = 1.0
+
+    grid = img.load()
+
+    #row major order
+    for h in range(height):
+        for w in range(width):
+            if grid[w, h] == 255:
+                occupancy_grid.data.append(0)
+            else:
+                occupancy_grid.data.append(100)
+    return occupancy_grid
