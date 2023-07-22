@@ -6,6 +6,7 @@ FROM ros-base-image:$ROS_DISTRO
 RUN apt update \
  && apt install -y \
     ros-$ROS_DISTRO-gazebo-ros-pkgs \
+ && pip3 install scipy \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /root/ros2_ws
