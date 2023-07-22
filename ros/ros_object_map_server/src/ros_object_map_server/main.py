@@ -65,6 +65,7 @@ class ObjectMapServer():
             self.server.main_loop()
             
             if self.occupancy_grid is not None:
+                self.occupancy_grid.header.stamp = rospy.Time.now()
                 self.pub_grid.publish(self.occupancy_grid)
             self.rate.sleep()
 
