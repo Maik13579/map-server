@@ -253,11 +253,13 @@ class ObjectMapServer():
 
 
 if __name__ == '__main__':
-    import argparse
-    parser = argparse.ArgumentParser(description='Object Map Server')
-    parser.add_argument('--object_path', type=str, help='path to objects')
-    parser.add_argument('--frame_path', type=str, help='path to frames')
-    args = parser.parse_args()
+    import sys
+    if len(sys.argv) > 2:
+        object_path = sys.argv[2]
+        frame_path = sys.argv[1]
+    else:
+        print("Usage: ros2 run ros_object_map_server main.py <frame_path> <object_path>")
+        exit()
 
-    ObjectMapServer(args.object_path, args.frame_path)
+    ObjectMapServer(object_path, frame_path)
 
